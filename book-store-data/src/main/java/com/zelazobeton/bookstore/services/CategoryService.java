@@ -2,6 +2,7 @@ package com.zelazobeton.bookstore.services;
 
 import com.zelazobeton.bookstore.model.Category;
 import com.zelazobeton.bookstore.repository.CategoryRepository;
+import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

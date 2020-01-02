@@ -1,0 +1,20 @@
+spring:
+  datasource:
+#    url: jdbc:mysql://localhost:3306/bookstore_dev?serverTimezone=UTC
+#    username: bookstore_dev_user
+#    password: dev #should be done another way, e.g. passed as env var
+    platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: validate #hibernate won't be able to do DDL changes + check the db
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true #will show sql statements in logs
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: database_create.sql

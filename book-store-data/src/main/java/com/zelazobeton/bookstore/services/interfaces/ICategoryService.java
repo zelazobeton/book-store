@@ -1,4 +1,4 @@
-package com.zelazobeton.bookstore.services;
+package com.zelazobeton.bookstore.services.interfaces;
 
 import com.sun.xml.bind.v2.model.core.ID;
 import com.zelazobeton.bookstore.model.Category;
