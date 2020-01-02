@@ -1,5 +1,6 @@
 package com.zelazobeton.bookstore.controllers;
 
+import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
@@ -29,7 +30,7 @@ public class IndexController {
         Set<Item> items = itemService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("items", items);
-        return "index";
+        return Templates.INDEX_VIEW;
     }
 
     @GetMapping("/category/{id}")
@@ -42,16 +43,6 @@ public class IndexController {
         List<Item> items = itemService.findByCategory(category);
         model.addAttribute("categories", categories);
         model.addAttribute("items", items);
-        return "index";
-    }
-
-    @GetMapping("/items/{id}")
-    public String getItemDetailView(Model model, @PathVariable("id") Long id){
-        Item item = itemService.findById(id);
-        if(item == null){
-            return "redirect:/";
-        }
-        model.addAttribute("item", item);
-        return "item_detail_view";
+        return Templates.INDEX_VIEW;
     }
 }

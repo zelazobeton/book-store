@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <header th:insert="fragments.html :: header"> </header>
-  <title>Shop Item - Start Bootstrap Template</title>
+  <title>Add review</title>
 </head>
 
 <body>
@@ -49,28 +49,19 @@
           </div>
           <div class="card-body">
             <section th:each="review:${item.reviews}">
-              <p th:text="${review.text}">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Omnis et enim aperiam inventore, similique necessitatibus neque non!
-                  Doloribus, modi sapiente laboriosam aperiam fugiat laborum.
-                  Sequi mollitia, necessitatibus quae sint natus.</p>
-<!--              <small class="text-muted"-->
-<!--                     th:text="'Posted by ' + ${review.author} + ' on ' + ${review.date}">-->
-<!--                Posted by Anonymous on 3/1/17-->
-<!--              </small>-->
+              <p th:text="${review}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+              <small class="text-muted"
+                     th:text="'Posted by ' + ${item.author} + ' on ' + ${item.date}">
+                Posted by Anonymous on 3/1/17
+              </small>
               <hr>
             </section>
+
+            <a href="#" th:href="'/items/' + ${item.id} + '/addReview/'" class="btn btn-success">Leave a Review</a>
           </div>
         </div>
         <!-- /.card -->
 
-        <form th:object="${command}"
-              th:action="@{'/items/' + ${item.id} + '/review-update'} "
-              method="post">
-            <input type="hidden" th:field="*{item}" />
-            <textarea class="form-control" rows="4" th:field="*{text}"></textarea>
-            <button class="btn btn-success" type="submit">Leave review</button>
-        </form>
       </div>
       <!-- /.col-lg-9 -->
 

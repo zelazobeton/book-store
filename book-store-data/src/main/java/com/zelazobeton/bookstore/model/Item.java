@@ -75,6 +75,10 @@ public class Item extends BaseEntity {
         return reviews;
     }
 
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public void addReview(Review review) {
         this.reviews.add(review);
     }

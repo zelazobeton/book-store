@@ -1,5 +1,6 @@
 package com.zelazobeton.bookstore.model;
 
+import com.zelazobeton.bookstore.commands.ReviewCommand;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Entity
 public class Review extends BaseEntity {
     @Lob
-    private String reviewText;
+    private String text;
     private Integer stars;
     private String author;
     @Column(name = "date")
@@ -20,9 +21,18 @@ public class Review extends BaseEntity {
     private Item item;
 
     public Review() {}
+    public Review(ReviewCommand command) {
+        this.id = command.id;
+        this.text = command.text;
+        this.stars = 0;
+        this.author = "Anon";
+        this.date = command.date;
+        this.item = command.item;
+    }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
+
+    public void setReviewText(String text) {
+        this.text = text;
     }
 
     public Integer getStars() {
@@ -35,7 +45,7 @@ public class Review extends BaseEntity {
 
     @Override
     public String toString() {
-        return reviewText;
+        return text;
     }
 
     public String getAuthor() {
@@ -52,5 +62,17 @@ public class Review extends BaseEntity {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
