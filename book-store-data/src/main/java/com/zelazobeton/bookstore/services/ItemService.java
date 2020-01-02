@@ -1,42 +1,62 @@
 package com.zelazobeton.bookstore.services;
 
+import com.sun.xml.bind.v2.model.core.ID;
+import com.zelazobeton.bookstore.model.Category;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.repository.ItemRepository;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class ItemService extends AbstractServiceJPA<Item, Long>
-                         implements IItemService {
+public class ItemService implements IItemService {
 
-    public ItemService(ItemRepository categoryRepository) {
-        super.repository = categoryRepository;
+    private ItemRepository repository;
+
+    public ItemService(ItemRepository itemRepository) {
+        this.repository = itemRepository;
     }
 
     @Override
     public Item findById(Long id) {
-        return super.findById(id);
+        Optional<Item> object = repository.findById(id);
+        if(object.isPresent()){
+            return object.get();
+        }
+        return null;
     }
 
     @Override
     public Item save(Item object) {
-        return super.save(object);
+        if(object == null){
+            throw new RuntimeException("Saving object: object is null");
+        }
+        return repository.save(object);
     }
 
     @Override
     public Set<Item> findAll() {
-        return super.findAll();
+        Set<Item> set = new HashSet<>();
+        repository.findAll().iterator().forEachRemaining(set::add);
+        return set;
     }
 
     @Override
     public void delete(Item object) {
-        super.delete(object);
+        repository.delete(object);
     }
 
     @Override
     public void deleteById(Long id) {
-        super.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    @Override
+    public List<Item> findByCategory(Category category) {
+        return repository.findAllByCategories(category);
     }
 }

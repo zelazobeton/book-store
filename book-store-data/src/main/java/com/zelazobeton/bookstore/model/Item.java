@@ -1,6 +1,7 @@
 package com.zelazobeton.bookstore.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,7 +10,11 @@ import java.util.Set;
 public class Item extends BaseEntity {
     private String name;
     @Lob
-    private String description;
+    private String descriptionShort;
+    @Lob
+    private String descriptionFull;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private Set<Review> reviews = new HashSet<>();
     private double price;
     @ManyToMany
     @JoinTable(name = "item_category",
@@ -20,7 +25,8 @@ public class Item extends BaseEntity {
     public Item() {}
     public Item(ItemBuilder itemBuilder){
         this.name = itemBuilder.name;
-        this.description = itemBuilder.description;
+        this.descriptionShort = itemBuilder.descriptionShort;
+        this.descriptionFull = itemBuilder.descriptionFull;
         this.price = itemBuilder.price;
         this.categories = itemBuilder.categories;
     }
@@ -33,12 +39,20 @@ public class Item extends BaseEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptionShort() {
+        return descriptionShort;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionShort(String descriptionShort) {
+        this.descriptionShort = descriptionShort;
+    }
+
+    public String getDescriptionFull() {
+        return descriptionFull;
+    }
+
+    public void setDescriptionFull(String descriptionFull) {
+        this.descriptionFull = descriptionFull;
     }
 
     public double getPrice() {
@@ -57,15 +71,25 @@ public class Item extends BaseEntity {
         return categories;
     }
 
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+
     public static class ItemBuilder{
         private String name = "name empty";
-        private String description = "description empty";
+        private String descriptionShort = "description empty";
+        private String descriptionFull = "description empty";
         private double price = 0.00d;
         private Set<Category> categories = new HashSet<>();
 
         public ItemBuilder() {}
         public ItemBuilder name(String name){this.name = name; return this;}
-        public ItemBuilder description(String description){this.description = description; return this;}
+        public ItemBuilder descriptionShort(String description){this.descriptionShort = description; return this;}
+        public ItemBuilder descriptionFull(String description){this.descriptionFull = description; return this;}
         public ItemBuilder price(double price){this.price = price; return this;}
         public ItemBuilder addCategory(Category category){this.categories.add(category); return this;}
         public Item build(){

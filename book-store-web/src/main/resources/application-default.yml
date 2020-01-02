@@ -1,8 +1,5 @@
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3306/bookstore_dev?serverTimezone=UTC
-#    username: bookstore_dev_user
-#    password: dev #should be done another way, e.g. passed as env var
     platform: h2
   jpa:
     hibernate:

@@ -1,76 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous"
-        th:src="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}">
-
-  <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-          crossorigin="anonymous"
-  th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
-        th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
-
-  <!-- Custom styles for this template -->
-  <link href="../static/css/shop-homepage.css" rel="stylesheet"
-        th:href="@{/css/shop-homepage.css}"/>
-
+  <header th:insert="fragments.html :: header"></header>
   <title>Shop Homepage - Start Bootstrap Template</title>
-
 </head>
 
 <body>
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-<!--      <a class="navbar-brand" href="#">Start Bootstrap</a>-->
-<!--      <button class="navbar-toggler" type="button"-->
-<!--              data-toggle="collapse" data-target="#navbarResponsive"-->
-<!--              aria-controls="navbarResponsive" aria-expanded="false"-->
-<!--              aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--      </button>-->
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<nav th:insert="fragments.html :: navbar"> </nav>
 
   <!-- Page Content -->
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-
         <h1 class="my-4">Book Store</h1>
         <div class="list-group">
           <a class="list-group-item"
@@ -123,7 +64,7 @@
                      th:text="${item.name}">Item One</a>
                 </h4>
                 <h5 th:text="${item.price} + ' PLN'">$24.99</h5>
-                <p class="card-text" th:text="${item.description}">
+                <p class="card-text" th:text="${item.descriptionShort}">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Amet numquam aspernatur!</p>
               </div>
@@ -145,15 +86,9 @@
   </div>
   <!-- /.container -->
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+  <footer th:insert="fragments.html :: footer"> </footer>
 
-  <!-- Bootstrap core JavaScript -->
+    <!-- Bootstrap core JavaScript -->
 <!--  <script src="vendor/jquery/jquery.min.js"></script>-->
 <!--  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
 

@@ -26,11 +26,14 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         categoryRepository.save(new Category("Philosophy"));
         categoryRepository.save(new Category("Programming languages"));
 
-        itemRepository.save((new Item.ItemBuilder())
-                .name("Effective Java")
-                .description("Great book containing best practices of software development in Java.")
-                .price(29.99)
-                .addCategory(categoryRepository.findByName("Programming languages").get())
-                .build());
+        for(int idx = 1; idx < 10; idx++){
+            itemRepository.save((new Item.ItemBuilder())
+                    .name("Effective Java vol. " + idx)
+                    .descriptionShort("Great book containing best practices of software development in Java.")
+                    .descriptionFull("Blablabla Great book containing best practices of software development in Java.")
+                    .price(9.99 * idx)
+                    .addCategory(categoryRepository.findByName("Programming languages").get())
+                    .build());
+        }
     }
 }
