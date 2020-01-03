@@ -26,12 +26,12 @@ public class IndexController {
         this.itemService = itemService;
     }
 
-//    @RequestMapping(value = "/([\\w\\-]+/)*{category:[a-zA-Z\\-]+}",
-    @RequestMapping(value = "/{category:[a-zA-Z\\-]+}",
-                    method = RequestMethod.GET)
+    @GetMapping({"/{category:[a-zA-Z\\-]+}",
+                 "/{firstCat}/{category:[a-zA-Z\\-]+}",
+                 "/{firstCat}/{secondCat}/{category:[a-zA-Z\\-]+}"})
     public String getItemsByCategory(Model model,
                                      @PathVariable("category") String categoryName){
-        log.debug("getItemsByCategory category: " + categoryName);
+        System.out.println("getItemsByCategory category: " + categoryName);
         Category category = categoryService.findByName(categoryName.replace('-', ' '));
         if(category == null){
             return "redirect:/";
