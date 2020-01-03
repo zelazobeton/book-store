@@ -17,8 +17,8 @@
           <a class="list-group-item"
              href="#"
              th:each="category:${categories}"
-             th:text="${category}"
-             th:href="@{'/category/' + ${category.id}}">category 1
+             th:text="${category.name}"
+             th:href="@{'/' + ${category.categoryChain}}">category 1
           </a>
         </div>
       </div>
@@ -60,7 +60,7 @@
               <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#" th:href="@{'/items/' + ${item.id}}"
+                  <a href="#" th:href="@{'/item=' + ${item.id}}"
                      th:text="${item.name}">Item One</a>
                 </h4>
                 <h5 th:text="${item.price} + ' PLN'">$24.99</h5>

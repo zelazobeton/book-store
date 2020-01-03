@@ -2,6 +2,5 @@ package com.zelazobeton.bookstore;
 
 public class Templates {
     public static final String ITEM_DETAIL_VIEW = "item_detail_view";
-    public static final String REVIEW_FORM = "review_form";
     public static final String INDEX_VIEW = "index";
 }

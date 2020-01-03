@@ -1,7 +1,6 @@
 package com.zelazobeton.bookstore.services;
 
 import com.zelazobeton.bookstore.model.Category;
-import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.repository.CategoryRepository;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,15 @@ public class CategoryService implements ICategoryService {
     @Override
     public Category findById(Long id) {
         Optional<Category> object = repository.findById(id);
+        if(object.isPresent()){
+            return object.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Category findByName(String name) {
+        Optional<Category> object = repository.findByName(name);
         if(object.isPresent()){
             return object.get();
         }
@@ -49,5 +57,20 @@ public class CategoryService implements ICategoryService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public String getCategoryChainString(Category category){
+        Deque<String> categoryDeque = new ArrayDeque<>();
+        while (!category.isBasicCategory()){
+            category = category.getSupercategory();
+            categoryDeque.addFirst(category.getName());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String elem : categoryDeque){
+            sb.append(elem);
+            sb.append('/');
+        }
+        return sb.toString();
     }
 }

@@ -4,17 +4,19 @@ import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.zelazobeton.bookstore.model.Category;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
+@Slf4j
 public class IndexController {
     private final ICategoryService categoryService;
     private final IItemService itemService;
@@ -24,23 +26,31 @@ public class IndexController {
         this.itemService = itemService;
     }
 
-    @GetMapping({"/", ""})
-    public String getIndexPage(Model model){
-        List<Category> categories = categoryService.findAll();
-        Set<Item> items = itemService.findAll();
-        model.addAttribute("categories", categories);
+//    @RequestMapping(value = "/([\\w\\-]+/)*{category:[a-zA-Z\\-]+}",
+    @RequestMapping(value = "/{category:[a-zA-Z\\-]+}",
+                    method = RequestMethod.GET)
+    public String getItemsByCategory(Model model,
+                                     @PathVariable("category") String categoryName){
+        log.debug("getItemsByCategory category: " + categoryName);
+        Category category = categoryService.findByName(categoryName.replace('-', ' '));
+        if(category == null){
+            return "redirect:/";
+        }
+
+        List<Item> items = itemService.findByCategory(category);
+        model.addAttribute("categories", category.getSubcategories());
         model.addAttribute("items", items);
         return Templates.INDEX_VIEW;
     }
 
-    @GetMapping("/category/{id}")
-    public String getItemsByCategory(Model model, @PathVariable("id") Long id){
-        Category category = categoryService.findById(id);
-        if(category == null){
-            return "redirect:/";
-        }
-        List<Category> categories = categoryService.findAll();
-        List<Item> items = itemService.findByCategory(category);
+    @GetMapping({"/", ""})
+    public String getIndexPage(Model model){
+        List<Category> categories = new ArrayList<>();
+        categoryService.findAll()
+                       .stream()
+                       .filter(Category::isBasicCategory)
+                       .forEach(categories::add);
+        Set<Item> items = itemService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("items", items);
         return Templates.INDEX_VIEW;

@@ -29,7 +29,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/items/{id}")
+    @GetMapping("/item={id}")
     public String getItemDetailView(Model model, @PathVariable("id") Long id){
         System.out.println("@@@ getItemDetailView");
         Item item = itemService.findById(id);
