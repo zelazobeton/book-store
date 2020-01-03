@@ -29,7 +29,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/item={id}")
+    @GetMapping("**/item={id}")
     public String getItemDetailView(Model model, @PathVariable("id") Long id){
         System.out.println("@@@ getItemDetailView");
         Item item = itemService.findById(id);
@@ -41,7 +41,7 @@ public class ItemController {
         return Templates.ITEM_DETAIL_VIEW;
     }
 
-    @PostMapping("/items/{id}/review-update")
+    @PostMapping("**/item={id}/review-update")
     public String updateItemReviews(@PathVariable("id") Long id,
                                     @ModelAttribute ReviewCommand command){
         Item item = itemService.findById(id);
@@ -50,6 +50,6 @@ public class ItemController {
         }
         command.date = LocalDate.now();
         Review savedReview = reviewService.save(command);
-        return "redirect:/items/" + savedReview.getItem().getId();
+        return "redirect:/item=" + savedReview.getItem().getId();
     }
 }
