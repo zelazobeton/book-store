@@ -42,6 +42,11 @@
             </p>
             <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
             4.0 stars
+            <form th:object="${item}"
+                  th:action="@{'/cart'} "
+                  method="post">
+              <button class="btn btn-success" type="submit">Add to cart</button>
+            </form>
           </div>
         </div>
         <!-- /.card -->

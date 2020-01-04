@@ -10,7 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("prod")
+@Profile("default")
 public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent> {
     private CategoryRepository categoryRepository;
     private ItemRepository itemRepository;

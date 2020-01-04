@@ -26,22 +26,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
+        auth.userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder);
-//            .inMemoryAuthentication()
-//            .withUser("franek@zelazobeton.com")
-//            .password("$2a$10$ZOrdrwPivYq2yfB33W3hRe59CyN1UZn9LJaYlaTfXXJszu0vuhxC6")
-//            .roles("USER", "ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+//            .csrf().disable()
             .authorizeRequests()
             .antMatchers("/admin/**").hasAnyRole("ADMIN")
-            .antMatchers("/vendor/**", "/css/**", "/webjars/**").permitAll()
-            .anyRequest().hasAnyRole("USER").and()
+            .antMatchers("/vendor/**", "/css/**", "/webjars/**", "/h2-console/**").permitAll()
+            .antMatchers("/cart").hasAnyRole("USER").and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/")

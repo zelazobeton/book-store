@@ -2,9 +2,11 @@ package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.model.Item;
+import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,8 @@ public class IndexController {
                  "/cat/{firstCat}/{category:[a-zA-Z\\-]+}",
                  "/cat/{firstCat}/{secondCat}/{category:[a-zA-Z\\-]+}"})
     public String getItemsByCategory(Model model,
-                                     @PathVariable("category") String categoryName){
+                                     @PathVariable("category") String categoryName,
+                                     @AuthenticationPrincipal User user){
         System.out.println("getItemsByCategory category: " + categoryName);
         Category category = categoryService.findByName(categoryName.replace('-', ' '));
         if(category == null){
@@ -39,12 +42,14 @@ public class IndexController {
 
         List<Item> items = itemService.findByCategory(category);
         model.addAttribute("categories", category.getSubcategories());
+        model.addAttribute("user", user);
         model.addAttribute("items", items);
         return Templates.INDEX_VIEW;
     }
 
     @GetMapping({"/", ""})
-    public String getIndexPage(Model model){
+    public String getIndexPage(Model model,
+                               @AuthenticationPrincipal User user){
         List<Category> categories = new ArrayList<>();
         categoryService.findAll()
                        .stream()
@@ -52,6 +57,7 @@ public class IndexController {
                        .forEach(categories::add);
         Set<Item> items = itemService.findAll();
         model.addAttribute("categories", categories);
+        model.addAttribute("user", user);
         model.addAttribute("items", items);
         return Templates.INDEX_VIEW;
     }
