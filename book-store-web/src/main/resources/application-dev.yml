@@ -1,3 +1,19 @@
+#spring:
+#  datasource:
+#    platform: h2
 spring:
   datasource:
-    platform: h2
+    url: jdbc:mysql://localhost:3306/bookstore_dev?serverTimezone=UTC
+#    driverClassName: com.mysql.cj.jdbc.Driver #what for?
+    username: bookstore_dev_user
+    password: dev
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    database-platform: org.hibernate.dialect.MySQL57Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true
+  thymeleaf:
+    cache: false

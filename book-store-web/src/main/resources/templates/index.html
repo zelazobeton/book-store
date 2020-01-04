@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <header th:insert="fragments.html :: header"></header>
+<head th:insert="fragments.html :: header">
+<!--  <header th:insert="fragments.html :: header"></header>-->
   <title>Shop Homepage - Start Bootstrap Template</title>
 </head>
 
@@ -18,7 +18,7 @@
              href="#"
              th:each="category:${categories}"
              th:text="${category.name}"
-             th:href="@{'/' + ${category.categoryChain}}">category 1
+             th:href="@{'/cat/' + ${category.categoryChain}}">category 1
           </a>
         </div>
       </div>
@@ -87,10 +87,6 @@
   <!-- /.container -->
 
   <footer th:insert="fragments.html :: footer"> </footer>
-
-    <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

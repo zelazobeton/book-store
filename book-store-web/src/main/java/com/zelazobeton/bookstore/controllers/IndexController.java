@@ -26,9 +26,9 @@ public class IndexController {
         this.itemService = itemService;
     }
 
-    @GetMapping({"/{category:[a-zA-Z\\-]+}",
-                 "/{firstCat}/{category:[a-zA-Z\\-]+}",
-                 "/{firstCat}/{secondCat}/{category:[a-zA-Z\\-]+}"})
+    @GetMapping({"/cat/{category:[a-zA-Z\\-]+}",
+                 "/cat/{firstCat}/{category:[a-zA-Z\\-]+}",
+                 "/cat/{firstCat}/{secondCat}/{category:[a-zA-Z\\-]+}"})
     public String getItemsByCategory(Model model,
                                      @PathVariable("category") String categoryName){
         System.out.println("getItemsByCategory category: " + categoryName);

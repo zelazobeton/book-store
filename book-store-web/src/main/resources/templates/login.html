@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: header">
+<!--  <header th:insert="fragments.html :: header"> </header>-->
+  <title>Login page</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="card mt-4">
+          <div class="card-body">
+            <form action="" method="post">
+              <fieldset>
+                <!--              <legend>Please Login</legend>-->
+                <h3 class="card-title">Please Login</h3>
+                <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
+                <div th:if="${param.error != null}">
+                  Failed to login.
+                  <div th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+                    Reason: <span th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
+                  </div>
+                </div>
+                <!-- the configured LogoutConfigurer#logoutSuccessUrl is /login?logout and contains the query param logout -->
+                <div th:if="${param.logout != null}">You have been logged out.</div>
+                <p>
+                  <label for="username">Username</label>
+                  <input type="text" id="username" name="username" />
+                </p>
+                <p>
+                  <label for="password">Password</label>
+                  <input type="password" id="password" name="password" />
+                </p>
+                <div>
+                  <!--                <button type="submit" class="btn">Log in</button>-->
+                  <button class="btn btn-success" type="submit">Log in</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+
+  </div>
+  <!-- /.container -->
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>
