@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:insert="fragments.html :: header"> </header>
+  <title>Shop Item - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+<div class="container-fluid" style="margin-top: 20px">
+  <!-- Page Content -->
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="list-group">
+          <a class="list-group-item"
+             th:each="function:${functions}"
+             th:text="${function.name}"
+             th:href="@{'/admin/' + ${function.link}}">Do sth
+          </a>
+        </div>
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <form th:object="${item}" th:action="'add-item'" method="post" enctype="multipart/form-data">
+          <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <p>Please correct errors</p>
+          </div>
+          <input type="hidden" th:field="*{id}"/>
+          <div class="pannel-group">
+            <div class="panel panel-primary">
+              <div class="panel-body">
+                <h2>Add new item</h2>
+                <div class="row">
+                  <div class="col-md-9 form-group" th:class="${#fields.hasErrors('name')}
+                                    ? 'col-md-12 form-group has-error' : 'col-md-12 form-group'">
+                    <div class="row">
+                      <img src="../static/images/books.jpg"
+                           th:src="@{'item=' + ${item.id} + '/img=0'}"
+                           width="200" height="200">
+                    </div>
+                    <div class="row">
+                      <label class="control-label">Add item image</label>
+                    </div>
+                    <div class="row">
+                      <input id="imagefile" th:field="*{multipartImageFile}" name="imagefile" type="file" class="file">
+                    </div>
+
+                    <div class="row">
+                        <label>Item name</label>
+                        <input type="text" class="form-control"
+                               th:field="*{name}"
+                               th:errorclass="has-error"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                        </ul>
+                      </span>
+                    </div>
+
+                    <div class="row">
+                      <label>Price</label>
+                      <input type="text" class="form-control"
+                             th:field="*{price}"/>
+                    </div>
+
+                    <div class="row">
+                      <label>Short description</label>
+                      <textarea class="form-control" rows="2" th:field="*{descriptionShort}"></textarea>
+                      <span class="help-block" th:if="${#fields.hasErrors('descriptionShort')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('descriptionShort')}" th:text="${err}"/>
+                        </ul>
+                      </span>
+                    </div>
+
+                    <div class="row">
+                      <label>Full description</label>
+                      <textarea class="form-control" rows="4" th:field="*{descriptionFull}"></textarea>
+                      <span class="help-block" th:if="${#fields.hasErrors('descriptionFull')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('descriptionFull')}" th:text="${err}"/>
+                        </ul>
+                      </span>
+                    </div>
+
+                    <div class="row">
+                      <label>Categories</label>
+                      <div class="col-md-12 form-group">
+                        <ul>
+                          <li th:each="category: ${allCategories}">
+                            <input type="checkbox"
+                                   th:field="*{categories}"
+                                   th:value="${category.id}" />
+                            <label
+                              th:for="${#ids.prev('categories')}"
+                              th:text="${category.name}">category_name
+                            </label>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div><!--col-lg-9-->
+  </div>
+</div>
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>

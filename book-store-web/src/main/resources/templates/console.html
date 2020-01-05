@@ -7,21 +7,24 @@
 
 <body>
 <nav th:insert="fragments.html :: navbar"> </nav>
-
+<div class="container-fluid" style="margin-top: 20px">
   <!-- Page Content -->
-  <div class="container">
-
-    <div class="row">
-
-      <div class="col-lg-9">
-        <h1>CONSOLE</h1>
+  <div class="row">
+    <div class="col-lg-3">
+      <h1 class="my-4">Book Store</h1>
+      <div class="list-group">
+        <a class="list-group-item"
+           th:each="function:${functions}"
+           th:text="${function.name}"
+           th:href="@{'/admin/' + ${function.link}}">Do sth
+        </a>
       </div>
-    </div>
+    </div> <!-- /.col-lg-3 -->
 
-  </div>
-  <!-- /.container -->
+  </div> <!--end row-->
+</div>
 
-  <footer th:insert="fragments.html :: footer"> </footer>
+<footer th:insert="fragments.html :: footer"> </footer>
 
 </body>
 </html>

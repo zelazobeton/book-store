@@ -24,4 +24,22 @@ public class AdminService implements IAdminService {
         userRepository.findAll().iterator().forEachRemaining(userList::add);
         return userList;
     }
+
+    @Override
+    public List<Function> getFunctions() {
+        List<Function> functions = new ArrayList<>();
+        functions.add(new Function("Add item"));
+        functions.add(new Function("Add category"));
+        functions.add(new Function("Manage users"));
+        return functions;
+    }
+
+    public class Function{
+        public String name;
+        public String link;
+        public Function(String name) {
+            this.name = name;
+            this.link = name.toLowerCase().replace(' ', '-');
+        }
+    }
 }

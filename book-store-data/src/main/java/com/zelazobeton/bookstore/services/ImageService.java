@@ -1,8 +1,12 @@
 package com.zelazobeton.bookstore.services;
 
+import com.zelazobeton.bookstore.model.Item;
+import com.zelazobeton.bookstore.repository.ItemRepository;
 import com.zelazobeton.bookstore.services.interfaces.IImageService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +15,11 @@ import java.nio.file.Files;
 
 @Service
 public class ImageService implements IImageService {
-    public ImageService() {}
+    private final ItemRepository itemRepository;
+
+    public ImageService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     @Override
     public InputStream getImgInputStream(Byte[] image) throws IOException {
@@ -29,4 +37,24 @@ public class ImageService implements IImageService {
             return new ByteArrayInputStream(fileContent);
         }
     }
+
+    @Override
+    @Transactional
+    public void saveImageFile(Long itemId, MultipartFile file) {
+        try{
+            System.out.println("@ saveImageFile");
+            Item item = itemRepository.findById(itemId).get();
+            Byte[] byteObjects = new Byte[file.getBytes().length];
+            int i = 0;
+            for (byte b : file.getBytes()){
+                byteObjects[i++] = b;
+            }
+            item.setImage(byteObjects);
+            itemRepository.save(item);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

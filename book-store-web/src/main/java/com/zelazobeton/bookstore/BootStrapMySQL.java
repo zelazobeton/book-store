@@ -1,5 +1,6 @@
 package com.zelazobeton.bookstore;
 
+import com.zelazobeton.bookstore.commands.ItemCommand;
 import com.zelazobeton.bookstore.model.Category;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.repository.CategoryRepository;
@@ -54,7 +55,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         categoryRepository.save(root);
 
         for(int idx = 1; idx < 10; idx++){
-            itemRepository.save((new Item.ItemBuilder())
+            itemRepository.save((new ItemCommand())
                     .name("Effective Java vol. " + idx)
                     .descriptionShort("Great book containing best practices of software development in Java.")
                     .descriptionFull("Blablabla Great book containing best practices of software development in Java.")

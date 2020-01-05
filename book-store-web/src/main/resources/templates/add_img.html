@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:insert="fragments.html :: header"> </header>
+  <title>Shop Item - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+<div class="container-fluid" style="margin-top: 20px">
+  <!-- Page Content -->
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="list-group">
+          <a class="list-group-item"
+             th:each="function:${functions}"
+             th:text="${function.name}"
+             th:href="@{'/admin/' + ${function.link}}">Do sth
+          </a>
+        </div>
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <form method="post" enctype="multipart/form-data"
+              th:action="@{'/recipe/' + ${recipe.id} + '/image'}">
+          <div class="row">
+            <div class="col-md-3 form-group">
+              <label class="control-label">Select file</label>
+              <input id="imagefile" name="imagefile" type="file" class="file">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div><!--col-lg-9-->
+  </div>
+</div>
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>

@@ -57,7 +57,7 @@ public class AuthenticationSuccessHandlerImpl
         }
 
         if (isAdmin) {
-            return "/console";
+            return "/admin/console";
         }
         else if (isUser) {
             return "/";

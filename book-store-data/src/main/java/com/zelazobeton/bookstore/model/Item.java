@@ -1,10 +1,10 @@
 package com.zelazobeton.bookstore.model;
 
+import com.zelazobeton.bookstore.commands.ItemCommand;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,13 +29,13 @@ public class Item extends BaseEntity {
     private Byte[] image;
 
     public Item() {}
-    public Item(ItemBuilder itemBuilder){
-        this.name = itemBuilder.name;
-        this.descriptionShort = itemBuilder.descriptionShort;
-        this.descriptionFull = itemBuilder.descriptionFull;
-        this.price = itemBuilder.price;
-        this.categories = itemBuilder.categories;
-        this.image = itemBuilder.image;
+    public Item(ItemCommand command){
+        this.name = command.getName();
+        this.descriptionShort = command.getDescriptionShort();
+        this.descriptionFull = command.getDescriptionFull();
+        this.price = command.getPrice();
+        this.categories = command.getCategories();
+        this.image = command.getImage();
     }
 
     public void addCategory(Category category){
@@ -44,25 +44,5 @@ public class Item extends BaseEntity {
 
     public void addReview(Review review) {
         this.reviews.add(review);
-    }
-
-    public static class ItemBuilder{
-        private String name = "name empty";
-        private String descriptionShort = "description empty";
-        private String descriptionFull = "description empty";
-        private double price = 0.00d;
-        private Set<Category> categories = new HashSet<>();
-        private Byte[] image = null;
-
-        public ItemBuilder() {}
-        public ItemBuilder name(String name){this.name = name; return this;}
-        public ItemBuilder descriptionShort(String description){this.descriptionShort = description; return this;}
-        public ItemBuilder descriptionFull(String description){this.descriptionFull = description; return this;}
-        public ItemBuilder price(double price){this.price = price; return this;}
-        public ItemBuilder addCategory(Category category){this.categories.add(category); return this;}
-        public ItemBuilder image(Byte[] image){this.image = image; return this;}
-        public Item build(){
-            return new Item(this);
-        }
     }
 }
