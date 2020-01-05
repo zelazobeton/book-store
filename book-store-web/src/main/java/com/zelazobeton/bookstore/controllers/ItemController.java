@@ -46,7 +46,7 @@ public class ItemController {
         return Templates.ITEM_DETAIL_VIEW;
     }
 
-    @PostMapping("**/item={id}/review-update")
+    @PostMapping("**/user**/item={id}/review-update")
     public String updateItemReviews(Model model,
                                     @PathVariable("id") Long id,
                                     @ModelAttribute ReviewCommand command,
@@ -55,7 +55,8 @@ public class ItemController {
         if(item == null){
             return "redirect:/";
         }
-        command.date = LocalDate.now();
+        command.setDate(LocalDate.now());
+        command.setAuthor(user);
         Review savedReview = reviewService.save(command);
         model.addAttribute("user", user);
         return "redirect:/item=" + savedReview.getItem().getId();

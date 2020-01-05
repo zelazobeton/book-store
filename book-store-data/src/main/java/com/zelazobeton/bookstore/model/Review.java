@@ -1,6 +1,8 @@
 package com.zelazobeton.bookstore.model;
 
 import com.zelazobeton.bookstore.commands.ReviewCommand;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -8,11 +10,15 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 public class Review extends BaseEntity {
     @Lob
     private String text;
     private Integer stars;
-    private String author;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User author;
     @Column(name = "date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -25,54 +31,13 @@ public class Review extends BaseEntity {
         this.id = command.id;
         this.text = command.text;
         this.stars = 0;
-        this.author = "Anon";
+        this.author = command.author;
         this.date = command.date;
         this.item = command.item;
-    }
-
-
-    public void setReviewText(String text) {
-        this.text = text;
-    }
-
-    public Integer getStars() {
-        return stars;
-    }
-
-    public void setStars(Integer stars) {
-        this.stars = stars;
     }
 
     @Override
     public String toString() {
         return text;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

@@ -40,8 +40,6 @@
               Totam id dolores, sint aperiam sequi pariatur praesentium animi
               perspiciatis molestias iure, ducimus!
             </p>
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
             <form th:object="${item}"
                   th:action="@{'/cart'} "
                   method="post">
@@ -56,12 +54,13 @@
             Product Reviews
           </div>
           <div class="card-body">
+            <p th:if="${item.reviews.isEmpty()}" th:text="'There are no reviews of this item so far.'"></p>
             <section th:each="review:${item.reviews}">
               <p th:text="${review.text}">
                   Lorem ipsum...
               </p>
               <small class="text-muted"
-                     th:text="'Posted by ' + ${review.author} + ' on ' + ${review.date}">
+                     th:text="'Posted by ' + ${review.author.username} + ' on ' + ${review.date}">
                 Posted by Anonymous on 3/1/17
               </small>
               <hr>
@@ -70,15 +69,15 @@
         </div>
         <!-- /.card -->
         <div class="card card-outline-secondary my-4">
-            <div class="card-body">
-              <form th:object="${command}"
-                    th:action="@{'/item=' + ${item.id} + '/review-update'} "
-                    method="post">
-                  <input type="hidden" th:field="*{item}" />
-                  <textarea class="form-control" rows="4" th:field="*{text}"></textarea>
-                  <button class="btn btn-success" type="submit">Leave review</button>
-              </form>
-            </div>
+          <div class="card-body">
+            <form th:object="${command}"
+                  th:action="@{'user/item=' + ${item.id} + '/review-update'} "
+                  method="post">
+                <input type="hidden" th:field="*{item}" th:value="${item}"/>
+                <textarea class="form-control" rows="4" th:field="*{text}"></textarea>
+                <button class="btn btn-success" type="submit">Leave review</button>
+            </form>
+          </div>
         </div>
 
       </div>

@@ -50,6 +50,7 @@ public class IndexController {
     @GetMapping({"/", ""})
     public String getIndexPage(Model model,
                                @AuthenticationPrincipal User user){
+        System.out.println("@Controller: getIndexPage()");
         List<Category> categories = new ArrayList<>();
         categoryService.findAll()
                        .stream()
