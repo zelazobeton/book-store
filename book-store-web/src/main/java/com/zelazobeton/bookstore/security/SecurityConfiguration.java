@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -30,6 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder);
     }
 
+    @Bean
+    public AuthenticationSuccessHandler getAuthenticationSuccessHandler(){
+        return new AuthenticationSuccessHandlerImpl();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -42,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
+                .successHandler(getAuthenticationSuccessHandler())
                 .permitAll()
                 .and()
             .logout()

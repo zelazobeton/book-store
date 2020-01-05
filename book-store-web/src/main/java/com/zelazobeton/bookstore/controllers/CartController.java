@@ -1,5 +1,6 @@
 package com.zelazobeton.bookstore.controllers;
 
+import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.ItemService;
@@ -22,7 +23,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String addItemToCart(@AuthenticationPrincipal User user){
-        return "cart";
+        return Templates.CART_VIEW;
     }
 
     @PostMapping("/cart")
@@ -32,6 +33,6 @@ public class CartController {
 //        List<Item> items =
 //        model.addAttribute("items", items);
         model.addAttribute("user", user);
-        return "cart";
+        return Templates.CART_VIEW;
     }
 }
