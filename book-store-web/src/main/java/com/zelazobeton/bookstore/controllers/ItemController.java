@@ -12,10 +12,8 @@ import com.zelazobeton.bookstore.services.interfaces.IReviewService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,9 +29,9 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("**/item={id}")
+    @GetMapping("/item**")
     public String getItemDetailView(Model model,
-                                    @PathVariable("id") Long id,
+                                    @RequestParam("id") Long id,
                                     @AuthenticationPrincipal User user){
         System.out.println("@@@ getItemDetailView");
         Item item = itemService.findById(id);
@@ -46,11 +44,13 @@ public class ItemController {
         return Templates.ITEM_DETAIL_VIEW;
     }
 
-    @PostMapping("**/user**/item={id}/review-update")
+//    @PostMapping("**/user**/item={id}/review-update")
+    @PostMapping("/item/{id}/review-update")
     public String updateItemReviews(Model model,
-                                    @PathVariable("id") Long id,
+                                    @PathVariable("id") long id,
                                     @ModelAttribute ReviewCommand command,
-                                    @AuthenticationPrincipal User user){
+                                    @AuthenticationPrincipal User user,
+                                    RedirectAttributes attributes){
         Item item = itemService.findById(id);
         if(item == null){
             return "redirect:/";
@@ -59,6 +59,8 @@ public class ItemController {
         command.setAuthor(user);
         Review savedReview = reviewService.save(command);
         model.addAttribute("user", user);
-        return "redirect:/item=" + savedReview.getItem().getId();
+
+        attributes.addAttribute("id", savedReview.getItem().getId());
+        return "redirect:/item";
     }
 }

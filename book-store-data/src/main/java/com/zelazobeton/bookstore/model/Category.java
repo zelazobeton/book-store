@@ -11,18 +11,14 @@ public class Category extends BaseEntity{
     public Category() {}
     public Category(String name) {
         this.name = name;
-        this.categoryChain = "";
     }
-
-    @Column
-    private String categoryChain;
 
     @Column(unique = true)
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supercategory")
     private List<Category> subcategories = new ArrayList<>();
     @ManyToOne
-    private Category supercategory;
+    private Category supercategory = null;
 
     public String getName() {
         return name;
@@ -55,37 +51,6 @@ public class Category extends BaseEntity{
     }
 
     public boolean isBasicCategory(){
-        return supercategory == null ? false : supercategory.getSupercategory() == null;
-    }
-
-    public String getCategoryChain() {
-        return categoryChain;
-    }
-
-    public void setCategoryChain(String categoryChain) {
-        this.categoryChain = categoryChain;
-    }
-
-    public boolean isRoot(){
         return supercategory == null;
-    }
-
-    public void updateCategoryChain(){
-        if(isRoot()){
-            categoryChain = "";
-        }
-        else if(isBasicCategory()){
-            categoryChain = this.getName().replace(' ', '-');
-        }
-        else {
-            categoryChain = (new StringBuilder()).append(supercategory.getCategoryChain())
-                                                .append('/')
-                                                .append(this.getName().replace(' ', '-'))
-                                                .toString();
-        }
-
-        for(Category cat : subcategories){
-            cat.updateCategoryChain();
-        }
     }
 }

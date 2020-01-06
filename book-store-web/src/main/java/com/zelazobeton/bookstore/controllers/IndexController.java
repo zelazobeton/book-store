@@ -28,9 +28,7 @@ public class IndexController {
         this.itemService = itemService;
     }
 
-    @GetMapping({"/cat/{category:[a-zA-Z\\-]+}",
-                 "/cat/{firstCat}/{category:[a-zA-Z\\-]+}",
-                 "/cat/{firstCat}/{secondCat}/{category:[a-zA-Z\\-]+}"})
+    @GetMapping("/cat/{category:[a-zA-Z\\-]+}")
     public String getItemsByCategory(Model model,
                                      @PathVariable("category") String categoryName,
                                      @AuthenticationPrincipal User user){
@@ -47,7 +45,7 @@ public class IndexController {
         return Templates.INDEX_VIEW;
     }
 
-    @GetMapping({"/", ""})
+    @GetMapping({"/", "", "/cat"})
     public String getIndexPage(Model model,
                                @AuthenticationPrincipal User user){
         System.out.println("@Controller: getIndexPage()");

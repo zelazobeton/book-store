@@ -70,8 +70,9 @@
         <!-- /.card -->
         <div class="card card-outline-secondary my-4">
           <div class="card-body">
+            <!--                  th:action="@{'/item=' + ${item.id} + '/review-update'} "-->
             <form th:object="${command}"
-                  th:action="@{'user/item=' + ${item.id} + '/review-update'} "
+                  th:action="@{'/item/' + ${item.id} + '/review-update'} "
                   method="post">
                 <input type="hidden" th:field="*{item}" th:value="${item}"/>
                 <textarea class="form-control" rows="4" th:field="*{text}"></textarea>

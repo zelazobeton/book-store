@@ -23,19 +23,17 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        Category root = new Category("ROOT");
-        root.setSupercategory(null);
-
         Category albums = new Category("Albums");
-        root.addSubcategory(albums);
         Category for_kids = new Category("For kids");
-        root.addSubcategory(for_kids);
         Category foreign_languages = new Category("Foreign languages");
-        root.addSubcategory(foreign_languages);
         Category sciHum = new Category("Science and humanities");
-        root.addSubcategory(sciHum);
         Category literature = new Category("Literature");
-        root.addSubcategory(literature);
+
+        categoryRepository.save(albums);
+        categoryRepository.save(for_kids);
+        categoryRepository.save(foreign_languages);
+        categoryRepository.save(sciHum);
+        categoryRepository.save(literature);
 
         foreign_languages.addSubcategory(new Category("Spanish"));
         foreign_languages.addSubcategory(new Category("Chinese"));
@@ -50,9 +48,6 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         sciHum.addSubcategory(new Category("Medicine"));
         sciHum.addSubcategory(new Category("Biology"));
         sciHum.addSubcategory(new Category("Technical science"));
-
-        root.updateCategoryChain();
-        categoryRepository.save(root);
 
         for(int idx = 1; idx < 10; idx++){
             itemRepository.save((new ItemCommand())
