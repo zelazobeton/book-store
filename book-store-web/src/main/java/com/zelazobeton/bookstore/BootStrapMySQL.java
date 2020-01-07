@@ -29,12 +29,6 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         Category sciHum = new Category("Science and humanities");
         Category literature = new Category("Literature");
 
-        categoryRepository.save(albums);
-        categoryRepository.save(for_kids);
-        categoryRepository.save(foreign_languages);
-        categoryRepository.save(sciHum);
-        categoryRepository.save(literature);
-
         foreign_languages.addSubcategory(new Category("Spanish"));
         foreign_languages.addSubcategory(new Category("Chinese"));
         foreign_languages.addSubcategory(new Category("French"));
@@ -48,6 +42,12 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         sciHum.addSubcategory(new Category("Medicine"));
         sciHum.addSubcategory(new Category("Biology"));
         sciHum.addSubcategory(new Category("Technical science"));
+
+        categoryRepository.save(albums);
+        categoryRepository.save(for_kids);
+        categoryRepository.save(foreign_languages);
+        categoryRepository.save(sciHum);
+        categoryRepository.save(literature);
 
         for(int idx = 1; idx < 10; idx++){
             itemRepository.save((new ItemCommand())

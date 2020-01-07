@@ -11,7 +11,6 @@ public interface ICategoryService {
     Category findByName(String name);
     Category save(Category object);
     List<Category> findAll();
-    String getCategoryChainString(Category category);
 
     void delete(Category object);
     void deleteById(Long id);

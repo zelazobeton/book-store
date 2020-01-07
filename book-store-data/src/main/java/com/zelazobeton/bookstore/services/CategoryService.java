@@ -58,19 +58,4 @@ public class CategoryService implements ICategoryService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public String getCategoryChainString(Category category){
-        Deque<String> categoryDeque = new ArrayDeque<>();
-        while (!category.isBasicCategory()){
-            category = category.getSupercategory();
-            categoryDeque.addFirst(category.getName());
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String elem : categoryDeque){
-            sb.append(elem);
-            sb.append('/');
-        }
-        return sb.toString();
-    }
 }

@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="fragments.html :: header">
-  <title>Cart</title>
+  <title>Shop Homepage - Start Bootstrap Template</title>
 </head>
 
 <body>
 <nav th:insert="fragments.html :: navbar"> </nav>
 
-  <!-- Page Content -->
-  <div class="container">
-
-    <div class="row" th:each="item:${items}">
-
-      <div class="col-lg-3">
-        <a href="#">
-        <img class="card-img-top img-fluid" src="../static/images/books.jpg" alt=""
-             th:src="@{'/item=' + ${item.id} + '/img=0'}"
-             width="100">
-        </a>
-      </div>
-
-      <div class="col-lg-9">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h3 class="card-title" th:text="${item.name}">Product Name</h3>
-            <h4 th:text="${item.price} + ' PLN'">$24.99</h4>
-          </div>
-        </div>
-      </div>
-      <!-- /.col-lg-9 -->
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-9">
+			<form th:object="${cart}" th:action="@{'/cart'}" method="post">
+				<input type="hidden" th:field="*{user}"/>
+				<input type="hidden" th:field="*{id}"/>
+				<table id="owners" class="table table-striped">
+					<thead>
+					<tr>
+						<td>Amount</td>
+						<td>Product name</td>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="cartObject, stat : ${cart.cartObjects}">
+						<td><input type="number" class="form-control" th:value="${cartObject.amount}"
+											 th:field="*{cartObjects[__${stat.index}__].amount}"></td>
+						<td th:text="${cartObject.item.name}"></td>
+						<input type="hidden" th:field="*{cartObjects[__${stat.index}__].item}"/>
+						<input type="hidden" th:field="*{cartObjects[__${stat.index}__].id}"/>
+						<input type="hidden" th:field="*{cartObjects[__${stat.index}__].cart}"/>
+					</tr>
+					</tbody>
+				</table>
+				<button class="btn btn-success" type="submit">Update cart</button>
+			</form>
     </div>
-  </div>
-  <!-- /.container -->
+    <!-- /.col-lg-9 -->
 
-  <footer th:insert="fragments.html :: footer"> </footer>
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<footer th:insert="fragments.html :: footer"> </footer>
 
 </body>
+
 </html>

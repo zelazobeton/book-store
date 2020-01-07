@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
             + " left join fetch u.authorities"
             + " where u.username = :username")
     User findByUsername(String username);
+
+
 }

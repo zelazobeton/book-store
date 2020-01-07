@@ -2,10 +2,7 @@ package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.ReviewCommand;
-import com.zelazobeton.bookstore.model.Category;
-import com.zelazobeton.bookstore.model.Item;
-import com.zelazobeton.bookstore.model.Review;
-import com.zelazobeton.bookstore.model.User;
+import com.zelazobeton.bookstore.model.*;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import com.zelazobeton.bookstore.services.interfaces.IReviewService;
@@ -39,12 +36,12 @@ public class ItemController {
             return "redirect:/";
         }
         model.addAttribute("command", new ReviewCommand(item));
+        model.addAttribute("cartObjectCommand", new CartObjectCommand(item.getId()));
         model.addAttribute("item", item);
         model.addAttribute("user", user);
         return Templates.ITEM_DETAIL_VIEW;
     }
 
-//    @PostMapping("**/user**/item={id}/review-update")
     @PostMapping("/item/{id}/review-update")
     public String updateItemReviews(Model model,
                                     @PathVariable("id") long id,

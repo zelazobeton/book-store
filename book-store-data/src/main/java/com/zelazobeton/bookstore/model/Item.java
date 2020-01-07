@@ -34,12 +34,18 @@ public class Item extends BaseEntity {
         this.descriptionShort = command.getDescriptionShort();
         this.descriptionFull = command.getDescriptionFull();
         this.price = command.getPrice();
-        this.categories = command.getCategories();
+        for(Category cat : command.getCategories()){
+            addCategory(cat);
+        }
         this.image = command.getImage();
     }
 
     public void addCategory(Category category){
         categories.add(category);
+        while(!category.isBasicCategory()){
+            category = category.getSupercategory();
+            categories.add(category);
+        }
     }
 
     public void addReview(Review review) {
