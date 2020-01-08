@@ -7,7 +7,7 @@ import com.zelazobeton.bookstore.model.Review;
 import java.util.List;
 
 public interface IReviewService {
-    Review save(ReviewCommand object);
+    void save(ReviewCommand object);
 
     void delete(Review object);
     void deleteById(Long id);

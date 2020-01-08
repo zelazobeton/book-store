@@ -28,7 +28,6 @@ public class User extends BaseEntity {
     }
 
     public void setCart(Cart cart) {
-        cart.setUser(this);
         this.cart = cart;
     }
 }

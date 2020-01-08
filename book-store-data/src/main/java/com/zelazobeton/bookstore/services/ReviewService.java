@@ -24,14 +24,13 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public Review save(ReviewCommand command) {
-        Optional<Item> item = itemRepository.findById(command.item.getId());
-        if(!item.isPresent()){
-            return null;
+    public void save(ReviewCommand command) {
+        Optional<Item> itemOpt = itemRepository.findById(command.getItem().getId());
+        if(itemOpt.isPresent()){
+            Item item = itemOpt.get();
+            item.addReview(new Review(command));
+            itemRepository.save(item);
         }
-        Review savedReview = reviewRepository.save(new Review(command));
-        item.get().addReview(savedReview);
-        return savedReview;
     }
 
     @Override

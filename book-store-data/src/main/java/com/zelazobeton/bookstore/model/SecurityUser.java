@@ -10,6 +10,7 @@ public class SecurityUser extends User implements UserDetails {
         super.setUsername(user.getUsername());
         super.setPassword(user.getPassword());
         super.setAuthorities(user.getAuthorities());
+        super.setCart(user.getCart());
     }
 
     @Override

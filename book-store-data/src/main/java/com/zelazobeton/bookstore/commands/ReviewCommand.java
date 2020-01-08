@@ -14,7 +14,7 @@ public class ReviewCommand {
     public Long id;
     public String text;
     public Integer stars;
-    public User author;
+    public User user;
     public LocalDate date;
     public Item item;
 

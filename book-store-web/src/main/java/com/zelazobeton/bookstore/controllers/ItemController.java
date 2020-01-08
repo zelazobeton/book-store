@@ -1,9 +1,9 @@
 package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
+import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.commands.ReviewCommand;
 import com.zelazobeton.bookstore.model.*;
-import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import com.zelazobeton.bookstore.services.interfaces.IReviewService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ItemController {
@@ -36,7 +34,8 @@ public class ItemController {
             return "redirect:/";
         }
         model.addAttribute("command", new ReviewCommand(item));
-        model.addAttribute("cartObjectCommand", new CartObjectCommand(item.getId()));
+        //TODO use only cartItemCommand
+        model.addAttribute("cartItemCommand", new CartItemCommand(item));
         model.addAttribute("item", item);
         model.addAttribute("user", user);
         return Templates.ITEM_DETAIL_VIEW;
@@ -53,11 +52,11 @@ public class ItemController {
             return "redirect:/";
         }
         command.setDate(LocalDate.now());
-        command.setAuthor(user);
-        Review savedReview = reviewService.save(command);
-        model.addAttribute("user", user);
+        command.setUser(user);
+        reviewService.save(command);
+//        model.addAttribute("user", user);
 
-        attributes.addAttribute("id", savedReview.getItem().getId());
+        attributes.addAttribute("id", id);
         return "redirect:/item";
     }
 }

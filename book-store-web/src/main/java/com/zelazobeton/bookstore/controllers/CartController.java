@@ -2,8 +2,8 @@ package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.model.Cart;
-import com.zelazobeton.bookstore.model.CartObject;
-import com.zelazobeton.bookstore.model.CartObjectCommand;
+import com.zelazobeton.bookstore.commands.CartCommand;
+import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.ItemService;
 import com.zelazobeton.bookstore.services.interfaces.ICartService;
@@ -27,34 +27,34 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/cart")
+    @GetMapping({"/cart", "/addToCart"})
     public String getCartView(Model model,
                                 @AuthenticationPrincipal User user){
         System.out.println("@ getCartView(), user: " + user.getUsername());
         Cart cart = cartService.getCartByUser(user);
-        model.addAttribute("cart", cart);
+        model.addAttribute("cart", new CartCommand(cart));
         return Templates.CART_VIEW;
     }
 
     @PostMapping("/addToCart")
     public String addItemToCart(Model model,
-                                @ModelAttribute CartObjectCommand cartObjectCommand,
+                                @ModelAttribute CartItemCommand cartItemCommand,
                                 @AuthenticationPrincipal User user)
     {
         System.out.println("@ addItemToCart(), user: " + user.getUsername());
-        Cart updatedCart = cartService.addToCartByUser(user, cartObjectCommand);
-        model.addAttribute("cart", updatedCart);
+        Cart updatedCart = cartService.addToCartByUser(user, cartItemCommand);
+        model.addAttribute("cart", new CartCommand(updatedCart));
         return Templates.CART_VIEW;
     }
 
     @PostMapping("/cart")
     public String updateCart(Model model,
-                             @ModelAttribute Cart cart,
+                             @ModelAttribute CartCommand command,
                              @AuthenticationPrincipal User user)
     {
-        System.out.println("@ updateCart id: " + cart.getId());
-        Cart savedCart = cartService.updateCart(user, cart);
-        model.addAttribute("cart", savedCart);
+        System.out.println("@ updateCart id: " + command.getId());
+        Cart savedCart = cartService.updateCart(user, command);
+        model.addAttribute("cart", new CartCommand(savedCart));
         return Templates.CART_VIEW;
     }
 }

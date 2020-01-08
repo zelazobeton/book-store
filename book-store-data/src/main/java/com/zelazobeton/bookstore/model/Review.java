@@ -18,7 +18,7 @@ public class Review extends BaseEntity {
     private Integer stars;
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User author;
+    private User user;
     @Column(name = "date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -31,7 +31,7 @@ public class Review extends BaseEntity {
         this.id = command.id;
         this.text = command.text;
         this.stars = 0;
-        this.author = command.author;
+        this.user = command.user;
         this.date = command.date;
         this.item = command.item;
     }

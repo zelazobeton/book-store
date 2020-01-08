@@ -1,5 +1,7 @@
 package com.zelazobeton.bookstore.model;
 
+import com.zelazobeton.bookstore.commands.CartCommand;
+import com.zelazobeton.bookstore.commands.CartItemCommand;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,19 +14,29 @@ import java.util.List;
 @Setter
 public class Cart extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cart")
-    List<CartObject> cartObjects = new ArrayList<>();
+    List<CartItem> cartItems = new ArrayList<>();
     @OneToOne
     private User user;
 
     public Cart() {}
 
-    public void addToCart(CartObject cartObject){
-        cartObject.setCart(this);
-        cartObjects.add(cartObject);
+    public Cart(User user) {
+        this.user = user;
     }
 
-    public void update(Cart cart){
-        cartObjects = cart.getCartObjects();
+    public void addToCart(CartItem cartItem){
+        cartItem.setCart(this);
+        cartItems.add(cartItem);
+    }
+
+    public void updateByCommand(CartCommand command){
+        List<CartItem> newList = new ArrayList<>();
+        for(CartItemCommand elem : command.getCartItems()){
+            CartItem cartItem = new CartItem(elem);
+            cartItem.setCart(this);
+            newList.add(cartItem);
+        }
+        cartItems = newList;
     }
 
 }

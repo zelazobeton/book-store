@@ -1,5 +1,7 @@
 package com.zelazobeton.bookstore.services;
 
+import com.zelazobeton.bookstore.commands.CartCommand;
+import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.model.*;
 import com.zelazobeton.bookstore.repository.CartObjectRepository;
 import com.zelazobeton.bookstore.repository.CartRepository;
@@ -8,6 +10,7 @@ import com.zelazobeton.bookstore.repository.UserRepository;
 import com.zelazobeton.bookstore.services.interfaces.ICartService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -25,18 +28,15 @@ public class CartService implements ICartService {
         this.itemRepository = itemRepository;
     }
 
-    @Override
-    public Cart addToCart(Cart cart, CartObjectCommand command)
+    private Cart addToCart(Cart cart, CartItemCommand command)
     {
-        System.out.println("@ addToCart 0");
-        Optional<Item> optItem = itemRepository.findById(command.getItemId());
+        Optional<Item> optItem = itemRepository.findById(command.getItem().getId());
         if(!optItem.isPresent() || command.getAmount() < 1){
-            System.out.println("@ addToCart 1");
             return cart;
         }
         Item item = optItem.get();
-        Optional<CartObject> objInCart = cart
-                .getCartObjects()
+        Optional<CartItem> objInCart = cart
+                .getCartItems()
                 .stream()
                 .filter(obj -> obj.getItem().getId().equals(item.getId()))
                 .findFirst();
@@ -44,49 +44,48 @@ public class CartService implements ICartService {
             objInCart.get().addAmount(command.getAmount());
         }
         else{
-            cart.addToCart(new CartObject(command.getAmount(), item));
+            cart.addToCart(new CartItem(command.getAmount(), item, cart));
         }
-        System.out.println("@ addToCart 2");
-        return cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+        return savedCart;
     }
 
     @Override
-    public Cart addToCartByUser(User user, CartObjectCommand command) {
+    public Cart addToCartByUser(User user, CartItemCommand command) {
         Cart cart = getCartByUser(user);
         return addToCart(cart, command);
     }
 
     @Override
-    public Cart updateCart(User user, Cart cart)
+    @Transactional
+    public Cart updateCart(User user, CartCommand command)
     {
-        Optional<Cart> optOldCart = cartRepository.findByUser(user);
-        if(optOldCart.isPresent()){
-            Cart oldCart = optOldCart.get();
-            oldCart.update(cart);
-            return cartRepository.save(oldCart);
-        }
-        cart.setUser(user);
-        Cart savedNewCart = cartRepository.save(cart);
-        user.setCart(savedNewCart);
-        return savedNewCart;
+        Cart cart = getCartByUser(user);
+        cartObjectRepository.deleteAllByCart(cart);
+        cart.updateByCommand(command);
+        return cartRepository.save(cart);
     }
 
     @Override
     public Cart getCartByUser(User user) {
-        System.out.println("@ getCartByUser 1");
+        System.out.println("@ getCartByUser()");
         Optional<Cart> optCart = cartRepository.findByUser(user);
-        System.out.println("@ getCartByUser 2");
         if (optCart.isPresent()) {
-            System.out.println("@ getCartByUser 3");
             return optCart.get();
         }
-        System.out.println("@ getCartByUser 4");
-        Cart newCart = new Cart();
-        newCart.setUser(user);
-//        user.setCart(new Cart());
-//        User savedUser = userRepository.save(user);
-//        User savedUser = userRepository.save(user);
-//        return savedUser.getCart();
-        return cartRepository.save(newCart);
+        return createNewCartForUser(user);
+    }
+
+    private Cart createNewCartForUser(User user){
+        Optional<User> userFromDbOpt = userRepository.findById(user.getId());
+        if(userFromDbOpt.isPresent()){
+            User userFromDb = userFromDbOpt.get();
+            Cart newCart = new Cart(userFromDb);
+            userFromDb.setCart(newCart);
+            User savedUser = userRepository.save(userFromDb);
+            return cartRepository.findByUser(savedUser).get();
+        }
+        System.out.println("No user: " + user.getUsername() + " in db");
+        return null;
     }
 }
