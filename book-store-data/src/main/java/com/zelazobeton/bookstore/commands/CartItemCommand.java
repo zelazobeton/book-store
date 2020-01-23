@@ -14,7 +14,9 @@ public class CartItemCommand{
     private Integer amount;
     private Item item;
 
-    public CartItemCommand() {}
+    public CartItemCommand() {
+        this.amount = 1;
+    }
     public CartItemCommand(Item item) {
         this.amount = 1;
         this.item = item;

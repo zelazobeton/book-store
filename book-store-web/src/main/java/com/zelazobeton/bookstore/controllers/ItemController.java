@@ -24,16 +24,16 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/item**")
+    @GetMapping({"/item/{id}", "/item/{id}/"})
     public String getItemDetailView(Model model,
-                                    @RequestParam("id") Long id,
+                                    @PathVariable("id") long id,
                                     @AuthenticationPrincipal User user){
         System.out.println("@@@ getItemDetailView");
         Item item = itemService.findById(id);
         if(item == null){
             return "redirect:/";
         }
-        model.addAttribute("command", new ReviewCommand(item));
+        model.addAttribute("reviewCommand", new ReviewCommand(item));
         //TODO use only cartItemCommand
         model.addAttribute("cartItemCommand", new CartItemCommand(item));
         model.addAttribute("item", item);
@@ -54,9 +54,6 @@ public class ItemController {
         command.setDate(LocalDate.now());
         command.setUser(user);
         reviewService.save(command);
-//        model.addAttribute("user", user);
-
-        attributes.addAttribute("id", id);
-        return "redirect:/item";
+        return "redirect:/item/" + id;
     }
 }

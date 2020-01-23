@@ -59,8 +59,7 @@
               <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
-<!--                  <a href="#" th:href="@{'/item=' + ${item.id}}"-->
-                  <a href="#" th:href="@{/item(id=${item.id})}"
+                  <a th:href="@{'/item/' + ${item.id}}"
                      th:text="${item.name}">Item One</a>
                 </h4>
                 <h5 th:text="${item.price} + ' PLN'">$24.99</h5>

@@ -5,6 +5,7 @@ import com.zelazobeton.bookstore.repository.CategoryRepository;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -35,6 +36,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public Category save(Category object) {
         if(object == null){
             throw new RuntimeException("Saving object: object is null");
@@ -50,11 +52,13 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(Category object) {
         repository.delete(object);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

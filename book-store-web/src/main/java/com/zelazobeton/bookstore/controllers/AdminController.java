@@ -58,7 +58,7 @@ public class AdminController {
         imageService.saveImageFile(newItem.getId(), command.getMultipartImageFile());
         model.addAttribute("functions", adminService.getFunctions());
         System.out.println("@ new item added");
-        return "redirect:/item=" + newItem.getId();
+        return "redirect:/item/" + newItem.getId();
     }
 
     @GetMapping("item={id}/add-img")
@@ -73,6 +73,6 @@ public class AdminController {
     public String addImgToDb(@PathVariable("id") Long id, @RequestParam("imagefile") MultipartFile file) {
         System.out.println("@ addImgToDb()");
         imageService.saveImageFile(Long.valueOf(id), file);
-        return "redirect:/item=" + id + "/img=0";
+        return "redirect:/item/" + id + "/img=0";
     }
 }

@@ -7,6 +7,7 @@ import com.zelazobeton.bookstore.repository.ItemRepository;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class ItemService implements IItemService {
     }
 
     @Override
+    @Transactional
     public Item save(Item object) {
         if(object == null){
             throw new RuntimeException("Saving object: object is null");
@@ -46,11 +48,13 @@ public class ItemService implements IItemService {
     }
 
     @Override
+    @Transactional
     public void delete(Item object) {
         repository.delete(object);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

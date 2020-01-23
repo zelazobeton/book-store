@@ -10,6 +10,7 @@ import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import com.zelazobeton.bookstore.services.interfaces.IReviewService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,7 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
+    @Transactional
     public void save(ReviewCommand command) {
         Optional<Item> itemOpt = itemRepository.findById(command.getItem().getId());
         if(itemOpt.isPresent()){
@@ -34,11 +36,13 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
+    @Transactional
     public void delete(Review object) {
         reviewRepository.delete(object);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         reviewRepository.deleteById(id);
     }
