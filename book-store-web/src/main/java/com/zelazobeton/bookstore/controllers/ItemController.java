@@ -34,8 +34,10 @@ public class ItemController {
             return "redirect:/";
         }
         model.addAttribute("reviewCommand", new ReviewCommand(item));
-        //TODO use only cartItemCommand
-        model.addAttribute("cartItemCommand", new CartItemCommand(item));
+        if(!model.containsAttribute("cartItemCommand"))
+        {
+            model.addAttribute("cartItemCommand", new CartItemCommand(item));
+        }
         model.addAttribute("item", item);
         model.addAttribute("user", user);
         return Templates.ITEM_DETAIL_VIEW;
@@ -45,8 +47,7 @@ public class ItemController {
     public String updateItemReviews(Model model,
                                     @PathVariable("id") long id,
                                     @ModelAttribute ReviewCommand command,
-                                    @AuthenticationPrincipal User user,
-                                    RedirectAttributes attributes){
+                                    @AuthenticationPrincipal User user){
         Item item = itemService.findById(id);
         if(item == null){
             return "redirect:/";

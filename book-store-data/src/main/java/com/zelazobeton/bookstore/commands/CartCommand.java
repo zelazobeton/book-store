@@ -6,6 +6,7 @@ import com.zelazobeton.bookstore.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
 @Setter
 public class CartCommand {
     private Long id;
-    private List<CartItemCommand> cartItems = new ArrayList<>();
+    @Valid
+    private List<@Valid CartItemCommand> cartItems = new ArrayList<>();
     private User user;
 
     public CartCommand() {}

@@ -8,12 +8,20 @@ import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.ItemService;
 import com.zelazobeton.bookstore.services.interfaces.ICartService;
 import com.zelazobeton.bookstore.services.interfaces.IUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CartController {
@@ -38,10 +46,18 @@ public class CartController {
 
     @PostMapping("/addToCart")
     public String addItemToCart(Model model,
-                                @ModelAttribute CartItemCommand cartItemCommand,
+                                @Valid @ModelAttribute CartItemCommand cartItemCommand,
+                                final BindingResult result,
+                                RedirectAttributes attr,
                                 @AuthenticationPrincipal User user)
     {
         System.out.println("@ addItemToCart(), user: " + user.getUsername());
+        if(result.hasErrors())
+        {
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.cartItemCommand", result);
+            attr.addFlashAttribute("cartItemCommand", cartItemCommand);
+            return "redirect:/item/" + cartItemCommand.getItem().getId();
+        }
         Cart updatedCart = cartService.addToCartByUser(user, cartItemCommand);
         model.addAttribute("cart", new CartCommand(updatedCart));
         return Templates.CART_VIEW;
@@ -49,12 +65,32 @@ public class CartController {
 
     @PostMapping("/cart")
     public String updateCart(Model model,
-                             @ModelAttribute CartCommand command,
+                             @Valid @ModelAttribute CartCommand command,
+                             BindingResult result,
                              @AuthenticationPrincipal User user)
     {
         System.out.println("@ updateCart id: " + command.getId());
+        if(result.hasErrors())
+        {
+            result.getAllErrors().forEach(System.out::println);
+            model.addAttribute("cart", new CartCommand(cartService.getCartByUser(user)));
+            return Templates.CART_VIEW;
+        }
         Cart savedCart = cartService.updateCart(user, command);
         model.addAttribute("cart", new CartCommand(savedCart));
         return Templates.CART_VIEW;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

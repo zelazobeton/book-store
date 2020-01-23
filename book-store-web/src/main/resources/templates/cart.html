@@ -19,6 +19,7 @@
 					<tr>
 						<td>Amount</td>
 						<td>Product name</td>
+						<td>Remove</td>
 					</tr>
 					</thead>
 					<tbody>
@@ -26,10 +27,11 @@
 						<td><input type="number" class="form-control" th:value="${cartItem.amount}"
 											 th:field="*{cartItems[__${stat.index}__].amount}"></td>
 						<td th:text="${cartItem.item.name}"></td>
+						<td><input type="radio" th:value="'1'"
+											 th:field="*{cartItems[__${stat.index}__].removeFromCart}"></td>
 						<input type="hidden" th:field="*{cartItems[__${stat.index}__].item}"/>
 						<input type="hidden" th:field="*{cartItems[__${stat.index}__].id}"/>
 					</tr>
-					<!--						<input type="hidden" th:field="*{cartItems[__${stat.index}__].cart}"/>-->
 					</tbody>
 				</table>
 				<button class="btn btn-success" type="submit">Update cart</button>

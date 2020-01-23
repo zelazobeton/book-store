@@ -32,9 +32,12 @@ public class Cart extends BaseEntity {
     public void updateByCommand(CartCommand command){
         List<CartItem> newList = new ArrayList<>();
         for(CartItemCommand elem : command.getCartItems()){
-            CartItem cartItem = new CartItem(elem);
-            cartItem.setCart(this);
-            newList.add(cartItem);
+            if(!elem.removeFromCart())
+            {
+                CartItem cartItem = new CartItem(elem);
+                cartItem.setCart(this);
+                newList.add(cartItem);
+            }
         }
         cartItems = newList;
     }
