@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 @Setter
 public class CartItemCommand{
     private Long id;
-    @Min(value = 1, message = "must be a positive integer")
+    @Min(value = 1, message = "Amount of items must be a positive integer")
     private Integer amount;
     private Item item;
     private Boolean removeFromCart;

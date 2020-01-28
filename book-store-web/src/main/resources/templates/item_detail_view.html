@@ -45,8 +45,10 @@
               <input type="hidden" class="form-control" th:field="*{id}"/>
               <input type="hidden" th:field="*{item}" th:value="${item}"/>
 
-              <span class="help-block" th:if="${#fields.hasErrors('amount')}"
-                    th:text="${#fields.errors('amount').get(0)}">
+              <span class="help-block" th:if="${#fields.hasErrors('amount')}">
+                  <ul>
+                      <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"/>
+                  </ul>
               </span>
               <div class="row">
                 <div class="col-md-2 form-group">

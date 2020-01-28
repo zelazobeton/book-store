@@ -65,18 +65,19 @@ public class CartController {
 
     @PostMapping("/cart")
     public String updateCart(Model model,
-                             @Valid @ModelAttribute CartCommand command,
-                             BindingResult result,
+                             @Valid @ModelAttribute("cart") CartCommand cartCommand,
+                             final BindingResult result,
                              @AuthenticationPrincipal User user)
     {
-        System.out.println("@ updateCart id: " + command.getId());
+        System.out.println("@ updateCart id: " + cartCommand.getId());
         if(result.hasErrors())
         {
             result.getAllErrors().forEach(System.out::println);
-            model.addAttribute("cart", new CartCommand(cartService.getCartByUser(user)));
+//            model.addAttribute("cart", new CartCommand(cartService.getCartByUser(user)));
+            model.addAttribute("cart", cartCommand);
             return Templates.CART_VIEW;
         }
-        Cart savedCart = cartService.updateCart(user, command);
+        Cart savedCart = cartService.updateCart(user, cartCommand);
         model.addAttribute("cart", new CartCommand(savedCart));
         return Templates.CART_VIEW;
     }
