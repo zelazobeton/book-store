@@ -1,12 +1,11 @@
 package com.zelazobeton.bookstore.services;
 
-import com.zelazobeton.bookstore.model.Cart;
+import com.zelazobeton.bookstore.commands.UserBuilder;
+import com.zelazobeton.bookstore.commands.UserCommand;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.repository.UserRepository;
 import com.zelazobeton.bookstore.services.interfaces.IUserService;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -17,8 +16,13 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-//    @Override
-//    public Cart getUserCart(User user) {
-//
-//    }
+    public boolean userExists(UserCommand userCommand){
+        User user = userRepository.findByUsername(userCommand.getUsername());
+        return user != null;
+    }
+
+    public void registerUser(UserCommand userCommand){
+        User newUser = (new UserBuilder(userCommand)).build();
+        userRepository.save(newUser);
+    }
 }

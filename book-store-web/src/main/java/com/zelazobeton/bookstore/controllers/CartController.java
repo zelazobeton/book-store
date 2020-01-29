@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +72,6 @@ public class CartController {
         if(result.hasErrors())
         {
             result.getAllErrors().forEach(System.out::println);
-//            model.addAttribute("cart", new CartCommand(cartService.getCartByUser(user)));
             model.addAttribute("cart", cartCommand);
             return Templates.CART_VIEW;
         }

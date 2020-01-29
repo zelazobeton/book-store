@@ -10,6 +10,15 @@ import javax.persistence.OneToMany;
 @Entity
 public class Authorities extends BaseEntity implements GrantedAuthority {
 //    private static final Long serialVersionUID = -81515641654165L;
+
+    public Authorities(String authority, User user) {
+        this.authority = authority;
+        this.user = user;
+    }
+
+    public Authorities() {
+    }
+
     private String authority;
     @ManyToOne
     private User user;

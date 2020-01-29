@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:insert="fragments.html :: header"> </header>
+  <title>Shop Item - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+<div class="container-fluid" style="margin-top: 20px">
+  <!-- Page Content -->
+
+      <div class="col-lg-9">
+        <form th:object="${userCommand}" th:action="'register'" method="post">
+          <input type="hidden" th:field="*{id}"/>
+          <div class="pannel-group">
+            <div class="panel panel-primary">
+              <div class="panel-body">
+                <h2>Register user</h2>
+                <div class="col-md-9 form-group" th:class="${#fields.hasErrors('*')}
+                                  ? 'col-md-12 form-group has-error' : 'col-md-12 form-group'">
+                  <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p>Please correct errors</p>
+                  </div>
+                  <div class="row">
+                      <label>Email address</label>
+                      <input type="text" th:field="*{username}" class="form-control"/>
+                      <p th:each="error : ${#fields.errors('username')}"
+                         th:text="${error}">Validation email error</p>
+                  </div>
+
+                  <div class="row">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" class="form-control"/>
+                    <p th:each="error : ${#fields.errors('password')}"
+                       th:text="${error}">Validation error</p>
+                    <p th:each="error : ${#fields.errors('matchingPassword')}"
+                       th:text="${error}">Validation error</p>
+                  </div>
+
+                  <div class="row">
+                    <label>Confirm password</label>
+                    <input type="password" th:field="*{matchingPassword}" class="form-control"/>
+                  </div>
+
+                  <div class="row">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div><!--col-lg-9-->
+  </div>
+</div>
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>
