@@ -1,9 +1,9 @@
 package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
+import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.model.Cart;
 import com.zelazobeton.bookstore.commands.CartCommand;
-import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.ItemService;
 import com.zelazobeton.bookstore.services.interfaces.ICartService;
@@ -36,10 +36,11 @@ public class CartController {
 
     @GetMapping({"/cart", "/addToCart"})
     public String getCartView(Model model,
-                                @AuthenticationPrincipal User user){
+                              @AuthenticationPrincipal User user){
         System.out.println("@ getCartView(), user: " + user.getUsername());
         Cart cart = cartService.getCartByUser(user);
         model.addAttribute("cart", new CartCommand(cart));
+        model.addAttribute("user", user);
         return Templates.CART_VIEW;
     }
 
@@ -59,6 +60,7 @@ public class CartController {
         }
         Cart updatedCart = cartService.addToCartByUser(user, cartItemCommand);
         model.addAttribute("cart", new CartCommand(updatedCart));
+        model.addAttribute("user", user);
         return Templates.CART_VIEW;
     }
 
@@ -76,6 +78,7 @@ public class CartController {
             return Templates.CART_VIEW;
         }
         Cart savedCart = cartService.updateCart(user, cartCommand);
+        model.addAttribute("user", user);
         model.addAttribute("cart", new CartCommand(savedCart));
         return Templates.CART_VIEW;
     }

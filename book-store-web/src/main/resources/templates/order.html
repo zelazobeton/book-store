@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: header">
+  <title>Shop Homepage - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-9">
+			<form th:object="${orderCommand}" th:action="@{'/addOrder'}" method="post">
+				<input type="hidden" th:field="*{user}"/>
+				<input type="hidden" th:field="*{id}"/>
+				<table id="owners" class="table table-striped">
+					<thead>
+					<tr>
+						<td>Amount</td>
+						<td>Product name</td>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="orderItem, stat : ${orderCommand.orderItems}">
+						<td th:text="${orderItem.amount}"></td>
+						<td th:text="${orderItem.item.name}"></td>
+						<input type="hidden" th:field="*{orderItems[__${stat.index}__].amount}"/>
+						<input type="hidden" th:field="*{orderItems[__${stat.index}__].item}"/>
+						<input type="hidden" th:field="*{orderItems[__${stat.index}__].id}"/>
+						<input type="hidden" th:field="*{orderItems[__${stat.index}__].removeFromCart}"/>
+					</tr>
+					</tbody>
+				</table>
+
+				<div class="pannel-group">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h2>Order address</h2>
+							<div class="col-md-9 form-group" th:class="${#fields.hasErrors('*')}
+																	? 'col-md-12 form-group has-error' : 'col-md-12 form-group'">
+								<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+									<p>Please correct errors</p>
+								</div>
+								<input type="hidden" th:field="*{addressCommand.id}"/>
+								<input type="hidden" th:field="*{addressCommand.user}"/>
+								<input type="hidden" th:field="*{addressCommand.userOrder}"/>
+								<div class="row">
+									<label>Name</label>
+									<input type="text" th:field="*{addressCommand.name}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.name')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+								<div class="row">
+									<label>Surname</label>
+									<input type="text" th:field="*{addressCommand.surname}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.surname')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+								<div class="row">
+									<label>Street</label>
+									<input type="text" th:field="*{addressCommand.street}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.street')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+								<div class="row">
+									<label>Number</label>
+									<input type="text" th:field="*{addressCommand.number}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.number')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+								<div class="row">
+									<label>Postal code</label>
+									<input type="text" th:field="*{addressCommand.postalCode}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.postalCode')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+								<div class="row">
+									<label>City</label>
+									<input type="text" th:field="*{addressCommand.city}" class="form-control"/>
+									<p class="text-danger"
+										 th:each="error : ${#fields.errors('addressCommand.city')}"
+										 th:text="${error}">Validation error</p>
+								</div>
+
+							</div>
+							<button class="btn btn-success" type="submit">Place userOrder</button>
+						</div>
+					</div>
+				</div>
+			</form>
+    </div>
+    <!-- /.col-lg-9 -->
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+
+</html>

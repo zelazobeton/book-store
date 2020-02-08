@@ -20,27 +20,33 @@
 						 th:each="err : ${#fields.errors('*')}"
 						 th:text="${err}">Error msg</p>
 				</div>
-				<table id="owners" class="table table-striped">
-					<thead>
-					<tr>
-						<td>Amount</td>
-						<td>Product name</td>
-						<td>Remove</td>
-					</tr>
-					</thead>
-					<tbody>
-					<tr th:each="cartItem, stat : ${cart.cartItems}">
-						<td><input type="number" class="form-control" th:value="${cartItem.amount}"
-											 th:field="*{cartItems[__${stat.index}__].amount}"></td>
-						<td th:text="${cartItem.item.name}"></td>
-						<td><input type="radio" th:value="'1'"
-											 th:field="*{cartItems[__${stat.index}__].removeFromCart}"></td>
-						<input type="hidden" th:field="*{cartItems[__${stat.index}__].item}"/>
-						<input type="hidden" th:field="*{cartItems[__${stat.index}__].id}"/>
-					</tr>
-					</tbody>
-				</table>
-				<button class="btn btn-success" type="submit">Update cart</button>
+				<h2 th:if="${cart.isEmpty()}" th:text="'Your Shopping Cart is empty'">Your Shopping Cart is empty</h2>
+				<div th:if="${!cart.isEmpty()}">
+					<table id="owners" class="table table-striped">
+						<thead>
+						<tr>
+							<td>Amount</td>
+							<td>Product name</td>
+							<td>Remove</td>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="cartItem, stat : ${cart.cartItems}">
+							<td><select th:field="*{cartItems[__${stat.index}__].amount}">
+										<option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}"></option>
+									</select>
+							</td>
+							<td th:text="${cartItem.item.name}"></td>
+							<td><input type="radio" th:value="'1'"
+												 th:field="*{cartItems[__${stat.index}__].removeFromCart}"></td>
+							<input type="hidden" th:field="*{cartItems[__${stat.index}__].item}"/>
+							<input type="hidden" th:field="*{cartItems[__${stat.index}__].id}"/>
+						</tr>
+						</tbody>
+					</table>
+					<button class="btn btn-success" type="submit">Update cart</button>
+					<button class="btn btn-success" type="submit" th:formaction="@{'/prepareOrder'}">Place userOrder</button>
+				</div>
 			</form>
     </div>
     <!-- /.col-lg-9 -->

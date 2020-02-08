@@ -3,7 +3,7 @@ package com.zelazobeton.bookstore.services;
 import com.zelazobeton.bookstore.commands.CartCommand;
 import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.model.*;
-import com.zelazobeton.bookstore.repository.CartObjectRepository;
+import com.zelazobeton.bookstore.repository.CartItemRepository;
 import com.zelazobeton.bookstore.repository.CartRepository;
 import com.zelazobeton.bookstore.repository.ItemRepository;
 import com.zelazobeton.bookstore.repository.UserRepository;
@@ -16,14 +16,14 @@ import java.util.Optional;
 @Service
 public class CartService implements ICartService {
     private CartRepository cartRepository;
-    private CartObjectRepository cartObjectRepository;
+    private CartItemRepository cartItemRepository;
     private UserRepository userRepository;
     private ItemRepository itemRepository;
 
-    public CartService(CartRepository cartRepository, CartObjectRepository cartObjectRepository,
+    public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository,
                        UserRepository userRepository, ItemRepository itemRepository) {
         this.cartRepository = cartRepository;
-        this.cartObjectRepository = cartObjectRepository;
+        this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
     }
@@ -61,7 +61,7 @@ public class CartService implements ICartService {
     public Cart updateCart(User user, CartCommand command)
     {
         Cart cart = getCartByUser(user);
-        cartObjectRepository.deleteAllByCart(cart);
+        cartItemRepository.deleteAllByCart(cart);
         cart.updateByCommand(command);
         return cartRepository.save(cart);
     }

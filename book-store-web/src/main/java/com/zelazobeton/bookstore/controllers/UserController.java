@@ -1,7 +1,6 @@
 package com.zelazobeton.bookstore.controllers;
 
 import com.zelazobeton.bookstore.Templates;
-import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.commands.UserCommand;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.UserService;

@@ -46,6 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/admin/**").hasAnyRole("ADMIN")
             .antMatchers("/cart/**").hasAnyRole("USER")
             .antMatchers("/addToCart/**").hasAnyRole("USER")
+            .antMatchers("/prepareOrder/**").hasAnyRole("USER")
+            .antMatchers("/addOrder/**").hasAnyRole("USER")
             .antMatchers(HttpMethod.POST, "/item/**").hasAnyRole("USER")
                 .and()
                 .formLogin()

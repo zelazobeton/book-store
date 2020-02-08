@@ -9,16 +9,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class CartItem extends BaseEntity{
-    private Integer amount;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Item item;
+public class CartItem extends TokenItem{
     @ManyToOne
     private Cart cart;
     public CartItem() {}
     public CartItem(Integer amount, Item item, Cart cart) {
-        this.amount = amount;
-        this.item = item;
+        super(amount, item);
         this.cart = cart;
     }
 
@@ -27,11 +23,6 @@ public class CartItem extends BaseEntity{
     }
 
     public CartItem(CartItemCommand command){
-        this.amount = command.getAmount();
-        this.item = command.getItem();
-    }
-
-    public void addAmount(Integer toAdd){
-        amount += toAdd;
+        super(command);
     }
 }

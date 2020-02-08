@@ -12,22 +12,25 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CartCommand {
+public class OrderCommand {
     private Long id;
     @Valid
-    private List<@Valid CartItemCommand> cartItems = new ArrayList<>();
+    private List<@Valid CartItemCommand> orderItems = new ArrayList<>();
     private User user;
+    @Valid
+    private AddressCommand addressCommand;
 
     public boolean isEmpty(){
-        return cartItems.isEmpty();
+        return orderItems.isEmpty();
     }
 
-    public CartCommand() {}
-    public CartCommand(Cart cart) {
+    public OrderCommand() {}
+    public OrderCommand(Cart cart) {
         this.id = cart.getId();
         this.user = cart.getUser();
         for (CartItem obj : cart.getCartItems()) {
-            cartItems.add(new CartItemCommand(obj));
+            orderItems.add(new CartItemCommand(obj));
         }
+        addressCommand = new AddressCommand(cart.getUser());
     }
 }

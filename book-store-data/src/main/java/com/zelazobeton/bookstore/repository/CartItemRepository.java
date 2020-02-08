@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
-public interface CartObjectRepository extends CrudRepository<CartItem, Long> {
+public interface CartItemRepository extends CrudRepository<CartItem, Long> {
     Set<CartItem> findAllByCart(Cart cart);
     void deleteAllByCart(Cart cart);
 }

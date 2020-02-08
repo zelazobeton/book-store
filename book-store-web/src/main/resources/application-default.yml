@@ -3,7 +3,7 @@ spring:
     platform: h2
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
     show-sql: true #will show sql statements in logs
