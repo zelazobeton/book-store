@@ -10,5 +10,5 @@ public interface ICartService {
     Cart addToCartByUser(User user, CartItemCommand command);
     Cart updateCart(User user, CartCommand command);
     Cart getCartByUser(User user);
-
+    void deleteCartItemByCart(Cart cart);
 }

@@ -61,6 +61,7 @@ public class OrderController {
             result.getAllErrors().forEach(System.out::println);
             return Templates.ORDER_VIEW;
         }
+        Cart oldCart = cartService.getCartByUser(user);
         UserOrder savedUserOrder = orderService.saveOrderByCommand(orderCommand, user);
 //        model.addAttribute(savedOrder);
 //        model.addAttribute("user", user);

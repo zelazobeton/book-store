@@ -40,8 +40,17 @@ public class OrderService implements IOrderService {
         newUserOrder.setAddress(newAddress);
         newAddress.setUserOrder(newUserOrder);
         UserOrder savedUserOrder = orderRepository.save(newUserOrder);
-
-        cartRepository.deleteByUser(user);
+        removeOrderedItemsFromCart(user);
         return savedUserOrder;
+    }
+
+    private void removeOrderedItemsFromCart(User user){
+        Optional<Cart> cartOpt = cartRepository.findByUser(user);
+        if(cartOpt.isPresent()){
+            Cart cartToEmpty = cartOpt.get();
+            cartItemRepository.deleteAllByCart(cartToEmpty);
+            cartToEmpty.removeItems();
+            cartRepository.save(cartToEmpty);
+        }
     }
 }

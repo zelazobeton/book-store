@@ -78,6 +78,7 @@ public class CartController {
             return Templates.CART_VIEW;
         }
         Cart savedCart = cartService.updateCart(user, cartCommand);
+
         model.addAttribute("user", user);
         model.addAttribute("cart", new CartCommand(savedCart));
         return Templates.CART_VIEW;

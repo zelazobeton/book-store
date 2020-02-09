@@ -42,4 +42,9 @@ public class Cart extends BaseEntity {
         cartItems = newList;
     }
 
+    public void removeItems(){
+        List<CartItem> newList = new ArrayList<>();
+        cartItems = newList;
+    }
+
 }

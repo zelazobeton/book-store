@@ -67,6 +67,12 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @Transactional
+    public void deleteCartItemByCart(Cart cart){
+        cartItemRepository.deleteAllByCart(cart);
+    }
+
+    @Override
     public Cart getCartByUser(User user) {
         System.out.println("@ getCartByUser()");
         Optional<Cart> optCart = cartRepository.findByUser(user);
