@@ -15,7 +15,7 @@ public class UserBuilder {
         Authorities authorities = new Authorities("ROLE_USER", user);
         this.user.setAuthorities(new HashSet<>());
         this.user.getAuthorities().add(authorities);
-        this.user.setCart(new Cart());
+        this.user.setCart(new Cart(this.user));
         this.user.setUsername(userCommand.getUsername());
 
         String encodedPassword = (new BCryptPasswordEncoder()).encode(userCommand.getPassword());

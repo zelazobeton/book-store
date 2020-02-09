@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:insert="fragments.html :: header"> </header>
+  <title>Shop Item - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+
+<div class="container-fluid" style="margin-top: 20px">
+  <!-- Page Content -->
+
+      <div class="col-lg-9">
+          <div class="pannel-group">
+            <div class="panel panel-primary">
+              <div class="panel-body">
+                <h4 th:text="'Order ID: ' + ${orderId} + ' has been successfully placed'"></h4>
+              </div>
+            </div>
+          </div>
+      </div><!--col-lg-9-->
+  </div>
+</div>
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>

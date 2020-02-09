@@ -27,5 +27,6 @@ public class TokenItem extends BaseEntity{
 
     public void addAmount(Integer toAdd){
         amount += toAdd;
+        if(amount > 10){amount = 10;}
     }
 }

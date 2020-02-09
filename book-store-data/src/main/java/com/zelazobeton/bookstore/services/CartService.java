@@ -42,12 +42,13 @@ public class CartService implements ICartService {
                 .findFirst();
         if(objInCart.isPresent()){
             objInCart.get().addAmount(command.getAmount());
+            cartItemRepository.save(objInCart.get());
+            return cart;
         }
         else{
             cart.addToCart(new CartItem(command.getAmount(), item, cart));
+            return cartRepository.save(cart);
         }
-        Cart savedCart = cartRepository.save(cart);
-        return savedCart;
     }
 
     @Override

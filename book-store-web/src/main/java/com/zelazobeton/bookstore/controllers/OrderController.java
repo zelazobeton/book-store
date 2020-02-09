@@ -63,10 +63,9 @@ public class OrderController {
         }
         Cart oldCart = cartService.getCartByUser(user);
         UserOrder savedUserOrder = orderService.saveOrderByCommand(orderCommand, user);
-//        model.addAttribute(savedOrder);
-//        model.addAttribute("user", user);
-//        return Templates.ORDER_CONFIRMATION;
-        return "redirect:/";
+        model.addAttribute("orderId", savedUserOrder.getId());
+        model.addAttribute("user", user);
+        return Templates.ORDER_CONFIRMATION;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

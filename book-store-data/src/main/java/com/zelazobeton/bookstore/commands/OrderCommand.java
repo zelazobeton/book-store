@@ -3,6 +3,7 @@ package com.zelazobeton.bookstore.commands;
 import com.zelazobeton.bookstore.model.Cart;
 import com.zelazobeton.bookstore.model.CartItem;
 import com.zelazobeton.bookstore.model.User;
+import com.zelazobeton.bookstore.model.UserOrder;
 import lombok.Getter;
 import lombok.Setter;
 

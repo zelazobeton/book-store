@@ -1,5 +1,6 @@
 package com.zelazobeton.bookstore.controllers;
 
+import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.ItemCommand;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.services.interfaces.IAdminService;
@@ -32,7 +33,7 @@ public class AdminController {
     @GetMapping("/console")
     public String getConsole(Model model){
         model.addAttribute("functions", adminService.getFunctions());
-        return "console";
+        return Templates.CONSOLE;
     }
 
     @GetMapping("/add-item")
@@ -40,7 +41,7 @@ public class AdminController {
         model.addAttribute("functions", adminService.getFunctions());
         model.addAttribute("allCategories", categoryService.findAll());
         model.addAttribute("item", new ItemCommand());
-        return "add_item";
+        return Templates.ADD_ITEM;
     }
 
     @PostMapping("/add-item")
@@ -52,7 +53,7 @@ public class AdminController {
             System.out.println("@ item form has errors");
             result.getAllErrors().forEach(System.out::println);
             model.addAttribute("recipe", command);
-            return "add_item";
+            return Templates.ADD_ITEM;
         }
         Item newItem = itemService.save(command.build());
         imageService.saveImageFile(newItem.getId(), command.getMultipartImageFile());

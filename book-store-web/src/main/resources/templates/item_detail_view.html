@@ -44,12 +44,9 @@
                   method="post">
               <input type="hidden" class="form-control" th:field="*{id}"/>
               <input type="hidden" th:field="*{item}" th:value="${item}"/>
-
-              <span class="alert alert-danger" th:if="${#fields.hasErrors('amount')}">
-                  <ul>
-                      <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"/>
-                  </ul>
-              </span>
+              <p class="text-danger"
+                 th:each="error : ${#fields.errors('amount')}"
+                 th:text="${error}">Validation error</p>
               <div class="row">
                 <div class="col-md-2 form-group">
                   <input type="number" class="form-control" th:field="*{amount}"/>

@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return Templates.LOGIN;
     }
 
     @GetMapping("/register")

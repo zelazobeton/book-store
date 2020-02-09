@@ -52,11 +52,9 @@
                         <input type="text" class="form-control"
                                th:field="*{name}"
                                th:errorclass="has-error"/>
-                        <span class="help-block" th:if="${#fields.hasErrors('name')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
-                        </ul>
-                      </span>
+                      <p class="text-danger"
+                         th:each="error : ${#fields.errors('name')}"
+                         th:text="${error}">Validation error</p>
                     </div>
 
                     <div class="row">
@@ -68,21 +66,17 @@
                     <div class="row">
                       <label>Short description</label>
                       <textarea class="form-control" rows="2" th:field="*{descriptionShort}"></textarea>
-                      <span class="help-block" th:if="${#fields.hasErrors('descriptionShort')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('descriptionShort')}" th:text="${err}"/>
-                        </ul>
-                      </span>
+                      <p class="text-danger"
+                         th:each="error : ${#fields.errors('descriptionShort')}"
+                         th:text="${error}">Validation error</p>
                     </div>
 
                     <div class="row">
                       <label>Full description</label>
                       <textarea class="form-control" rows="4" th:field="*{descriptionFull}"></textarea>
-                      <span class="help-block" th:if="${#fields.hasErrors('descriptionFull')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('descriptionFull')}" th:text="${err}"/>
-                        </ul>
-                      </span>
+                      <p class="text-danger"
+                         th:each="error : ${#fields.errors('descriptionFull')}"
+                         th:text="${error}">Validation error</p>
                     </div>
 
                     <div class="row">
