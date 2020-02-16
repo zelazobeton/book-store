@@ -40,7 +40,7 @@ public class ImageService implements IImageService {
 
     @Override
     @Transactional
-    public void saveImageFile(Long itemId, MultipartFile file) {
+    public void saveImageFile(Long itemId, MultipartFile file) throws IOException {
         try{
             System.out.println("@ saveImageFile");
             Item item = itemRepository.findById(itemId).get();
@@ -53,7 +53,7 @@ public class ImageService implements IImageService {
             itemRepository.save(item);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 }

@@ -92,7 +92,6 @@ public class CartService implements ICartService {
             User savedUser = userRepository.save(userFromDb);
             return cartRepository.findByUser(savedUser).get();
         }
-        System.out.println("No user: " + user.getUsername() + " in db");
-        return null;
+        throw new RuntimeException("No user: " + user.getUsername() + " in database");
     }
 }

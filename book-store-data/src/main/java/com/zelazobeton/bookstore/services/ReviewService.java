@@ -1,12 +1,11 @@
 package com.zelazobeton.bookstore.services;
 
 import com.zelazobeton.bookstore.commands.ReviewCommand;
-import com.zelazobeton.bookstore.model.Category;
+import com.zelazobeton.bookstore.exceptions.ResourceNotFoundException;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.model.Review;
 import com.zelazobeton.bookstore.repository.ItemRepository;
 import com.zelazobeton.bookstore.repository.ReviewRepository;
-import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import com.zelazobeton.bookstore.services.interfaces.IReviewService;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,8 @@ public class ReviewService implements IReviewService {
             item.addReview(new Review(command));
             itemRepository.save(item);
         }
+        throw new ResourceNotFoundException(
+                "Item with id: " + command.getItem().getId() + " does not exist");
     }
 
     @Override

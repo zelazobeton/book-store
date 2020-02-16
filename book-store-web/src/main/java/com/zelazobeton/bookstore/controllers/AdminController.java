@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
@@ -48,6 +49,7 @@ public class AdminController {
     public String saveNewItem(@Valid @ModelAttribute("item") ItemCommand command,
                               BindingResult result,
                               Model model)
+            throws IOException
     {
         if(result.hasErrors()){
             System.out.println("@ item form has errors");
@@ -71,7 +73,10 @@ public class AdminController {
     }
 
     @PostMapping("item={id}/add-img")
-    public String addImgToDb(@PathVariable("id") Long id, @RequestParam("imagefile") MultipartFile file) {
+    public String addImgToDb(@PathVariable("id") Long id,
+                             @RequestParam("imagefile") MultipartFile file)
+        throws IOException
+    {
         System.out.println("@ addImgToDb()");
         imageService.saveImageFile(Long.valueOf(id), file);
         return "redirect:/item/" + id + "/img=0";

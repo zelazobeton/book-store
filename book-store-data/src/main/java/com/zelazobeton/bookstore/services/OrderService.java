@@ -1,6 +1,7 @@
 package com.zelazobeton.bookstore.services;
 
 import com.zelazobeton.bookstore.commands.OrderCommand;
+import com.zelazobeton.bookstore.exceptions.ResourceNotFoundException;
 import com.zelazobeton.bookstore.model.*;
 import com.zelazobeton.bookstore.repository.*;
 import com.zelazobeton.bookstore.services.interfaces.IOrderService;
@@ -52,5 +53,7 @@ public class OrderService implements IOrderService {
             cartToEmpty.removeItems();
             cartRepository.save(cartToEmpty);
         }
+        throw new ResourceNotFoundException(
+                "User: " + user.getId() + " does not have cart to empty");
     }
 }

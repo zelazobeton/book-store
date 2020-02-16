@@ -11,4 +11,5 @@ public class Templates {
     public static final String REGISTER = "register";
     public static final String CONSOLE = "console";
     public static final String ADD_ITEM = "add_item";
+    public static final String ERROR = "error";
 }

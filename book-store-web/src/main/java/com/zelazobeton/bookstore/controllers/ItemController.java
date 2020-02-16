@@ -3,13 +3,17 @@ package com.zelazobeton.bookstore.controllers;
 import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.CartItemCommand;
 import com.zelazobeton.bookstore.commands.ReviewCommand;
-import com.zelazobeton.bookstore.model.*;
+import com.zelazobeton.bookstore.model.Item;
+import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import com.zelazobeton.bookstore.services.interfaces.IReviewService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 
@@ -29,9 +33,6 @@ public class ItemController {
                                     @AuthenticationPrincipal User user){
         System.out.println("@@@ getItemDetailView");
         Item item = itemService.findById(id);
-        if(item == null){
-            return "redirect:/";
-        }
         model.addAttribute("reviewCommand", new ReviewCommand(item));
         if(!model.containsAttribute("cartItemCommand"))
         {
@@ -47,10 +48,6 @@ public class ItemController {
                                     @PathVariable("id") long id,
                                     @ModelAttribute ReviewCommand command,
                                     @AuthenticationPrincipal User user){
-        Item item = itemService.findById(id);
-        if(item == null){
-            return "redirect:/";
-        }
         command.setDate(LocalDate.now());
         command.setUser(user);
         reviewService.save(command);

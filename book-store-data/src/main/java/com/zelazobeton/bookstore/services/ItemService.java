@@ -1,6 +1,7 @@
 package com.zelazobeton.bookstore.services;
 
 import com.sun.xml.bind.v2.model.core.ID;
+import com.zelazobeton.bookstore.exceptions.ResourceNotFoundException;
 import com.zelazobeton.bookstore.model.Category;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.repository.ItemRepository;
@@ -28,7 +29,7 @@ public class ItemService implements IItemService {
         if(object.isPresent()){
             return object.get();
         }
-        return null;
+        throw new ResourceNotFoundException("Item with id: " + id + " does not exist");
     }
 
     @Override

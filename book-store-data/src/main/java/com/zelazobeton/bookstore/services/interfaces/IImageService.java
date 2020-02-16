@@ -9,5 +9,5 @@ import java.io.InputStream;
 
 public interface IImageService {
     InputStream getImgInputStream(Byte[] image) throws IOException;
-    void saveImageFile(Long itemId, MultipartFile file);
+    void saveImageFile(Long itemId, MultipartFile file) throws IOException;
 }
