@@ -1,6 +1,5 @@
 package com.zelazobeton.bookstore.services;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import com.zelazobeton.bookstore.exceptions.ResourceNotFoundException;
 import com.zelazobeton.bookstore.model.Category;
 import com.zelazobeton.bookstore.model.Item;
@@ -9,10 +8,7 @@ import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ItemService implements IItemService {
@@ -26,19 +22,22 @@ public class ItemService implements IItemService {
     @Override
     public Item findById(Long id) {
         Optional<Item> object = repository.findById(id);
-        if(object.isPresent()){
+        try{
             return object.get();
         }
-        throw new ResourceNotFoundException("Item with id: " + id + " does not exist");
+        catch (NoSuchElementException ex){
+            throw new ResourceNotFoundException("Item with id: " + id + " does not exist");
+        }
+
     }
 
     @Override
     @Transactional
     public Item save(Item object) {
-        if(object == null){
-            throw new RuntimeException("Saving object: object is null");
+        if(object != null){
+            return repository.save(object);
         }
-        return repository.save(object);
+        throw new RuntimeException("Saving object: object is null");
     }
 
     @Override

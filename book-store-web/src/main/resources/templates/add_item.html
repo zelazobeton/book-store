@@ -25,8 +25,8 @@
       <div class="col-lg-9">
         <form th:object="${item}" th:action="'add-item'" method="post" enctype="multipart/form-data">
           <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-            <p>Please correct errors</p>
-          </div>
+          <p>Please correct errors</p>
+        </div>
           <input type="hidden" th:field="*{id}"/>
           <div class="pannel-group">
             <div class="panel panel-primary">

@@ -33,4 +33,8 @@ public class User extends BaseEntity {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
+    public boolean isAdmin(){
+        return authorities.stream().anyMatch(o -> o.getAuthority().equals("ROLE_ADMIN"));
+    }
 }

@@ -21,19 +21,23 @@ public class CategoryService implements ICategoryService {
     @Override
     public Category findById(Long id) {
         Optional<Category> object = repository.findById(id);
-        if(object.isPresent()){
+        try{
             return object.get();
         }
-        throw new ResourceNotFoundException("Category with id: " + id + " does not exist");
+        catch(NoSuchElementException ex){
+            throw new ResourceNotFoundException("Category with id: " + id + " does not exist");
+        }
     }
 
     @Override
     public Category findByName(String name) {
         Optional<Category> object = repository.findByName(name);
-        if(object.isPresent()){
+        try{
             return object.get();
         }
-        throw new ResourceNotFoundException("Category with name: " + name + " does not exist");
+        catch(NoSuchElementException ex){
+            throw new ResourceNotFoundException("Category with name: " + name + " does not exist");
+        }
     }
 
     @Override

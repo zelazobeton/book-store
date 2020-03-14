@@ -41,20 +41,15 @@ public class ImageService implements IImageService {
     @Override
     @Transactional
     public void saveImageFile(Long itemId, MultipartFile file) throws IOException {
-        try{
-            System.out.println("@ saveImageFile");
-            Item item = itemRepository.findById(itemId).get();
-            Byte[] byteObjects = new Byte[file.getBytes().length];
-            int i = 0;
-            for (byte b : file.getBytes()){
-                byteObjects[i++] = b;
-            }
-            item.setImage(byteObjects);
-            itemRepository.save(item);
+        System.out.println("@ saveImageFile");
+        Item item = itemRepository.findById(itemId).get();
+        Byte[] byteObjects = new Byte[file.getBytes().length];
+        int i = 0;
+        for (byte b : file.getBytes()){
+            byteObjects[i++] = b;
         }
-        catch (IOException e) {
-            throw e;
-        }
+        item.setImage(byteObjects);
+        itemRepository.save(item);
     }
 }
 

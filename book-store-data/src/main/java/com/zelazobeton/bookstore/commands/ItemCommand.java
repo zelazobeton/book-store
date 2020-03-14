@@ -28,7 +28,7 @@ public class ItemCommand{
     public ItemCommand price(double price){this.price = price; return this;}
     public ItemCommand addCategory(Category category){this.categories.add(category); return this;}
     public ItemCommand image(Byte[] image){this.image = image; return this;}
-    public Item build(){
+    public Item buildItem(){
         return new Item(this);
     }
 }

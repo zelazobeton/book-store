@@ -2,7 +2,6 @@ package com.zelazobeton.bookstore;
 
 import com.zelazobeton.bookstore.commands.ItemCommand;
 import com.zelazobeton.bookstore.model.Category;
-import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.repository.CategoryRepository;
 import com.zelazobeton.bookstore.repository.ItemRepository;
 import org.springframework.context.ApplicationListener;
@@ -56,7 +55,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
                     .descriptionFull("Blablabla Great book containing best practices of software development in Java.")
                     .price(9.99 * idx)
                     .addCategory(categoryRepository.findByName("Technical science").get())
-                    .build());
+                    .buildItem());
         }
     }
 }

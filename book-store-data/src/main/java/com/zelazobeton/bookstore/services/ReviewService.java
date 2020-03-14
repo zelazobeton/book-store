@@ -32,8 +32,10 @@ public class ReviewService implements IReviewService {
             item.addReview(new Review(command));
             itemRepository.save(item);
         }
-        throw new ResourceNotFoundException(
-                "Item with id: " + command.getItem().getId() + " does not exist");
+        else{
+            throw new ResourceNotFoundException(
+                    "Item with id: " + command.getItem().getId() + " does not exist");
+        }
     }
 
     @Override

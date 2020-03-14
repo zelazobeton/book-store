@@ -10,8 +10,10 @@ import com.zelazobeton.bookstore.services.interfaces.IItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -45,40 +47,49 @@ public class AdminController {
         return Templates.ADD_ITEM;
     }
 
+    private String backToAddItemForm(Model model, ItemCommand command){
+        model.addAttribute("recipe", command);
+        return Templates.ADD_ITEM;
+    }
+
     @PostMapping("/add-item")
     public String saveNewItem(@Valid @ModelAttribute("item") ItemCommand command,
                               BindingResult result,
                               Model model)
-            throws IOException
     {
         if(result.hasErrors()){
-            System.out.println("@ item form has errors");
             result.getAllErrors().forEach(System.out::println);
-            model.addAttribute("recipe", command);
-            return Templates.ADD_ITEM;
+            return backToAddItemForm(model, command);
         }
-        Item newItem = itemService.save(command.build());
-        imageService.saveImageFile(newItem.getId(), command.getMultipartImageFile());
+        Item newItem = itemService.save(command.buildItem());
+
+        try{
+            imageService.saveImageFile(newItem.getId(), command.getMultipartImageFile());
+        }
+        catch (IOException ex){
+            itemService.deleteById(newItem.getId());
+            return backToAddItemForm(model, command);
+        }
         model.addAttribute("functions", adminService.getFunctions());
         System.out.println("@ new item added");
         return "redirect:/item/" + newItem.getId();
     }
 
-    @GetMapping("item={id}/add-img")
-    public String showUploadForm(@PathVariable("id") Long id, Model model) {
-        Item item = itemService.findById(id);
-        model.addAttribute("item", item);
-        model.addAttribute("functions", adminService.getFunctions());
-        return "recipe/add-img";
-    }
-
-    @PostMapping("item={id}/add-img")
-    public String addImgToDb(@PathVariable("id") Long id,
-                             @RequestParam("imagefile") MultipartFile file)
-        throws IOException
-    {
-        System.out.println("@ addImgToDb()");
-        imageService.saveImageFile(Long.valueOf(id), file);
-        return "redirect:/item/" + id + "/img=0";
-    }
+//    @GetMapping("item={id}/add-img")
+//    public String showUploadForm(@PathVariable("id") Long id, Model model) {
+//        Item item = itemService.findById(id);
+//        model.addAttribute("item", item);
+//        model.addAttribute("functions", adminService.getFunctions());
+//        return "recipe/add-img";
+//    }
+//
+//    @PostMapping("item={id}/add-img")
+//    public String addImgToDb(@PathVariable("id") Long id,
+//                             @RequestParam("imagefile") MultipartFile file)
+//        throws IOException
+//    {
+//        System.out.println("@ addImgToDb()");
+//        imageService.saveImageFile(Long.valueOf(id), file);
+//        return "redirect:/item/" + id + "/img=0";
+//    }
 }
