@@ -3,20 +3,20 @@ package com.zelazobeton.bookstore.controllers;
 import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.ItemCommand;
 import com.zelazobeton.bookstore.model.Item;
+import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.services.interfaces.IAdminService;
 import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
 import com.zelazobeton.bookstore.services.interfaces.IImageService;
 import com.zelazobeton.bookstore.services.interfaces.IItemService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,45 +34,57 @@ public class AdminController {
     }
 
     @GetMapping("/console")
-    public String getConsole(Model model){
+    public String getConsole(Model model,
+                             @AuthenticationPrincipal User user){
         model.addAttribute("functions", adminService.getFunctions());
+        Set<Item> items = itemService.findAll();
+        model.addAttribute("items", items);
+        model.addAttribute("user", user);
         return Templates.CONSOLE;
     }
 
     @GetMapping("/add-item")
-    public String getAddItemSite(Model model){
+    public String getAddItemSite(Model model,
+                                 @AuthenticationPrincipal User user){
         model.addAttribute("functions", adminService.getFunctions());
         model.addAttribute("allCategories", categoryService.findAll());
         model.addAttribute("item", new ItemCommand());
-        return Templates.ADD_ITEM;
+        model.addAttribute("user", user);
+        return Templates.ADD_UPDATE_ITEM;
     }
 
-    private String backToAddItemForm(Model model, ItemCommand command){
-        model.addAttribute("recipe", command);
-        return Templates.ADD_ITEM;
+    @GetMapping("/item/{id}/update")
+    public String getUpdateItemSite(Model model,
+                                    @PathVariable("id") long id,
+                                    @AuthenticationPrincipal User user){
+        model.addAttribute("functions", adminService.getFunctions());
+        model.addAttribute("allCategories", categoryService.findAll());
+        model.addAttribute("item", new ItemCommand(itemService.findById(id)));
+        model.addAttribute("user", user);
+        return Templates.ADD_UPDATE_ITEM;
     }
 
-    @PostMapping("/add-item")
-    public String saveNewItem(@Valid @ModelAttribute("item") ItemCommand command,
-                              BindingResult result,
-                              Model model)
+    @PostMapping({"add-update-item", "/item/{id}/add-update-item"})
+    public String addOrUpdateItem(@Valid @ModelAttribute("item") ItemCommand command,
+                                  BindingResult result,
+                                  Model model,
+                                  @AuthenticationPrincipal User user)
     {
         if(result.hasErrors()){
             result.getAllErrors().forEach(System.out::println);
-            return backToAddItemForm(model, command);
+            return backToItemForm(model, command);
         }
-        Item newItem = itemService.save(command.buildItem());
+        Item savedItem = itemService.save(command.buildItem());
 
         try{
-            imageService.saveImageFile(newItem.getId(), command.getMultipartImageFile());
+            imageService.saveImageFile(savedItem.getId(), command.getMultipartImageFile());
         }
         catch (IOException ex){
-            itemService.deleteById(newItem.getId());
-            return backToAddItemForm(model, command);
+            return backToItemForm(model, command);
         }
         model.addAttribute("functions", adminService.getFunctions());
-        System.out.println("@ new item added");
-        return "redirect:/item/" + newItem.getId();
+        model.addAttribute("user", user);
+        return "redirect:/item/" + savedItem.getId();
     }
 
 //    @GetMapping("item={id}/add-img")
@@ -92,4 +104,9 @@ public class AdminController {
 //        imageService.saveImageFile(Long.valueOf(id), file);
 //        return "redirect:/item/" + id + "/img=0";
 //    }
+
+    private String backToItemForm(Model model, ItemCommand command){
+        model.addAttribute("recipe", command);
+        return Templates.ADD_UPDATE_ITEM;
+    }
 }

@@ -30,6 +30,7 @@ public class Item extends BaseEntity {
 
     public Item() {}
     public Item(ItemCommand command){
+        this.id = command.getId();
         this.name = command.getName();
         this.descriptionShort = command.getDescriptionShort();
         this.descriptionFull = command.getDescriptionFull();

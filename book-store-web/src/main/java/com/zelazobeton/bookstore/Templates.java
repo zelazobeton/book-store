@@ -10,6 +10,6 @@ public class Templates {
     public static final String ORDER_CONFIRMATION = "order_confirmation";
     public static final String REGISTER = "register";
     public static final String CONSOLE = "console";
-    public static final String ADD_ITEM = "add_item";
+    public static final String ADD_UPDATE_ITEM = "add_update_item";
     public static final String ERROR = "error";
 }

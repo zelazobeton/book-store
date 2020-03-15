@@ -22,6 +22,16 @@ public class ItemCommand{
     private MultipartFile multipartImageFile = null;
 
     public ItemCommand() {}
+    public ItemCommand(Item item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.descriptionShort = item.getDescriptionShort();
+        this.descriptionFull = item.getDescriptionFull();
+        this.price = item.getPrice();
+        this.categories = item.getCategories();
+        this.image = item.getImage();
+    }
+
     public ItemCommand name(String name){this.name = name; return this;}
     public ItemCommand descriptionShort(String description){this.descriptionShort = description; return this;}
     public ItemCommand descriptionFull(String description){this.descriptionFull = description; return this;}

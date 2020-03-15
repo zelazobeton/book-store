@@ -41,7 +41,7 @@
                 <li class="nav-item" th:if="${user}">
                     <a class="btn nav-link" th:if="${user.isAdmin()}"
                                             th:text="${'console'}"
-                                            th:href="@{'admin/console'}">Console</a>
+                                            th:href="@{'/admin/console'}">Console</a>
                 </li>
                 <li class="nav-item" th:if="${user}">
                     <a class="btn nav-link" th:text="${'My cart'}" href="#" th:href="@{'/cart'}">My cart</a>
