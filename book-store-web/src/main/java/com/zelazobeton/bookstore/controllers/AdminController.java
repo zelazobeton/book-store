@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,7 +37,7 @@ public class AdminController {
     public String getConsole(Model model,
                              @AuthenticationPrincipal User user){
         model.addAttribute("functions", adminService.getFunctions());
-        Set<Item> items = itemService.findAll();
+        List<Item> items = itemService.findAll();
         model.addAttribute("items", items);
         model.addAttribute("user", user);
         return Templates.CONSOLE;

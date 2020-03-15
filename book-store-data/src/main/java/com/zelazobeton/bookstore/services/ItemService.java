@@ -41,10 +41,10 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public Set<Item> findAll() {
-        Set<Item> set = new HashSet<>();
-        repository.findAll().iterator().forEachRemaining(set::add);
-        return set;
+    public List<Item> findAll() {
+        List<Item> items = new ArrayList<>();
+        repository.findAll().iterator().forEachRemaining(items::add);
+        return items;
     }
 
     @Override
@@ -62,5 +62,14 @@ public class ItemService implements IItemService {
     @Override
     public List<Item> findByCategory(Category category) {
         return repository.findAllByCategories(category);
+    }
+
+    @Override
+    public List<Item> findByName(String name) {
+        if(name == ""){
+            return findAll();
+        }
+        System.out.println("@@@ findByName");
+        return repository.findByName(name);
     }
 }

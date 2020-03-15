@@ -52,11 +52,29 @@
           </a>
         </div>
 
-        <div class="row">
+        <form th:action="@{/search}" method="get">
+          <div class="active-black-4 mb-4">
+            <input class="form-control" type="text" th:name="s"
+                   placeholder="Search" aria-label="Search">
+            <input type="submit"/>
+          </div>
+        </form>
 
+        <div class="row" th:if="${search_text}">
+          <p class="error"
+             th:if="${items.isEmpty()}"
+             th:text="${'There are no results for: ' + search_text}">There are no results for: s</p>
+
+          <p class="error"
+             th:if="${!items.isEmpty()}"
+             th:text="${'Showing results for: ' + search_text}">Showing results for: s</p>
+        </div>
+
+        <div class="row">
           <div th:each="item:${items}" class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+              <a href="#"><img class="card-img-top" th:src="@{'/item=' + ${item.id} + '/img=0'}"
+                               src="http://placehold.it/700x400" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
                   <a th:href="@{'/item/' + ${item.id}}"
