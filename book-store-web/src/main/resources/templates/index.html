@@ -24,7 +24,6 @@
       <!-- /.col-lg-3 -->
 
       <div class="col-lg-9">
-
         <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
           <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -56,11 +55,11 @@
           <div class="active-black-4 mb-4">
             <input class="form-control" type="text" th:name="s"
                    placeholder="Search" aria-label="Search">
-            <input type="submit"/>
+            <button class="btn btn-success" type="submit">Find</button>
           </div>
         </form>
 
-        <div class="row" th:if="${search_text}">
+        <div class="active-black-4 mb-4" th:if="${search_text}">
           <p class="error"
              th:if="${items.isEmpty()}"
              th:text="${'There are no results for: ' + search_text}">There are no results for: s</p>

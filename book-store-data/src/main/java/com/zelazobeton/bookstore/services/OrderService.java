@@ -1,8 +1,12 @@
 package com.zelazobeton.bookstore.services;
 
+import com.zelazobeton.bookstore.commands.AddressCommand;
 import com.zelazobeton.bookstore.commands.OrderCommand;
 import com.zelazobeton.bookstore.exceptions.ResourceNotFoundException;
-import com.zelazobeton.bookstore.model.*;
+import com.zelazobeton.bookstore.model.Address;
+import com.zelazobeton.bookstore.model.Cart;
+import com.zelazobeton.bookstore.model.User;
+import com.zelazobeton.bookstore.model.UserOrder;
 import com.zelazobeton.bookstore.repository.*;
 import com.zelazobeton.bookstore.services.interfaces.IOrderService;
 import org.springframework.stereotype.Service;
@@ -35,7 +39,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public UserOrder saveOrderByCommand(OrderCommand command, User user) {
+    public UserOrder placeNewOrder(OrderCommand command, User user) {
         UserOrder newUserOrder = new UserOrder(command);
         Address newAddress = new Address(command.getAddressCommand());
         newUserOrder.setAddress(newAddress);
@@ -43,6 +47,18 @@ public class OrderService implements IOrderService {
         UserOrder savedUserOrder = orderRepository.save(newUserOrder);
         removeOrderedItemsFromCart(user);
         return savedUserOrder;
+    }
+
+    private Address findDefaultAddressByUser(User user){
+        return addressRepository.findByUserAndSavedByUser(user, true);
+    }
+
+    public OrderCommand createOrderCommand(Cart cart){
+        Address savedAddress = findDefaultAddressByUser(cart.getUser());
+        AddressCommand defaultAddressCommand = (savedAddress == null)
+                ? new AddressCommand(cart.getUser())
+                : new AddressCommand(savedAddress);
+        return new OrderCommand(cart, defaultAddressCommand);
     }
 
     private void removeOrderedItemsFromCart(User user){

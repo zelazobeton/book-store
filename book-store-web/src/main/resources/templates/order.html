@@ -93,8 +93,12 @@
 										 th:text="${error}">Validation error</p>
 								</div>
 
+								<input type="checkbox" th:field="*{addressCommand.savedByUser}"/>
+								<label th:text="${'Save address as default'}">Save address for future use</label>
+								<div class="row">
+									<button class="btn btn-success" type="submit">Place order</button>
+								</div>
 							</div>
-							<button class="btn btn-success" type="submit">Place order</button>
 						</div>
 					</div>
 				</div>

@@ -4,8 +4,8 @@ import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.CartCommand;
 import com.zelazobeton.bookstore.commands.OrderCommand;
 import com.zelazobeton.bookstore.model.Cart;
-import com.zelazobeton.bookstore.model.UserOrder;
 import com.zelazobeton.bookstore.model.User;
+import com.zelazobeton.bookstore.model.UserOrder;
 import com.zelazobeton.bookstore.services.interfaces.ICartService;
 import com.zelazobeton.bookstore.services.interfaces.IOrderService;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -44,14 +47,14 @@ public class OrderController {
             return Templates.ORDER_VIEW;
         }
         Cart savedCart = cartService.updateCart(user, cartCommand);
-        model.addAttribute("orderCommand", new OrderCommand(savedCart));
+        model.addAttribute("orderCommand", orderService.createOrderCommand(savedCart));
         model.addAttribute("user", user);
         return Templates.ORDER_VIEW;
     }
 
     @PostMapping("/addOrder")
     public String addOrder(Model model,
-                            @ModelAttribute OrderCommand orderCommand,
+                            @Valid @ModelAttribute OrderCommand orderCommand,
                             BindingResult result,
                             @AuthenticationPrincipal User user)
     {
@@ -61,8 +64,7 @@ public class OrderController {
             result.getAllErrors().forEach(System.out::println);
             return Templates.ORDER_VIEW;
         }
-        Cart oldCart = cartService.getCartByUser(user);
-        UserOrder savedUserOrder = orderService.saveOrderByCommand(orderCommand, user);
+        UserOrder savedUserOrder = orderService.placeNewOrder(orderCommand, user);
         model.addAttribute("orderId", savedUserOrder.getId());
         model.addAttribute("user", user);
         return Templates.ORDER_CONFIRMATION;

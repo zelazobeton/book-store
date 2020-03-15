@@ -3,7 +3,6 @@ package com.zelazobeton.bookstore.commands;
 import com.zelazobeton.bookstore.model.Cart;
 import com.zelazobeton.bookstore.model.CartItem;
 import com.zelazobeton.bookstore.model.User;
-import com.zelazobeton.bookstore.model.UserOrder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,12 +25,12 @@ public class OrderCommand {
     }
 
     public OrderCommand() {}
-    public OrderCommand(Cart cart) {
+    public OrderCommand(Cart cart, AddressCommand addressCommand) {
         this.id = cart.getId();
         this.user = cart.getUser();
         for (CartItem obj : cart.getCartItems()) {
             orderItems.add(new CartItemCommand(obj));
         }
-        addressCommand = new AddressCommand(cart.getUser());
+        this.addressCommand = addressCommand;
     }
 }

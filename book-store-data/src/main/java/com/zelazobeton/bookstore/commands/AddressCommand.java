@@ -1,21 +1,17 @@
 package com.zelazobeton.bookstore.commands;
 
-import com.zelazobeton.bookstore.model.BaseEntity;
+import com.zelazobeton.bookstore.model.Address;
 import com.zelazobeton.bookstore.model.User;
 import com.zelazobeton.bookstore.model.UserOrder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
 public class AddressCommand{
-    public AddressCommand() {}
-    public AddressCommand(User user) {this.user = user;}
-
     private Long id;
     @NotBlank(message = "Please provide recipient's name")
     private String name;
@@ -31,4 +27,19 @@ public class AddressCommand{
     private String city;
     private UserOrder userOrder;
     private User user;
+    private boolean savedByUser;
+
+    public AddressCommand() {}
+    public AddressCommand(User user) {this.user = user;}
+    public AddressCommand(Address address){
+        this.id = address.getId();
+        this.name = address.getName();
+        this.surname = address.getSurname();
+        this.street = address.getStreet();
+        this.number = address.getNumber();
+        this.postalCode = address.getPostalCode();
+        this.city = address.getCity();
+        this.user = address.getUser();
+        this.savedByUser = false;
+    }
 }
