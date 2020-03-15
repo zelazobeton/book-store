@@ -41,16 +41,26 @@ public class OrderService implements IOrderService {
     @Transactional
     public UserOrder placeNewOrder(OrderCommand command, User user) {
         UserOrder newUserOrder = new UserOrder(command);
-        Address newAddress = new Address(command.getAddressCommand());
-        newUserOrder.setAddress(newAddress);
-        newAddress.setUserOrder(newUserOrder);
+        AddressCommand newAddressCommand = command.getAddressCommand();
+        if(newAddressCommand.isDefaultAddress()){
+            Address defaultAddress = findDefaultAddressByUser(user);
+            if(defaultAddress != null){
+                defaultAddress.updateByAddressCommand(newAddressCommand);
+                addressRepository.save(defaultAddress);
+            }
+            else{
+                addressRepository.save(new Address(newAddressCommand));
+            }
+            newAddressCommand.setDefaultAddress(false);
+        }
+        newUserOrder.setAddress(new Address(newAddressCommand));
         UserOrder savedUserOrder = orderRepository.save(newUserOrder);
         removeOrderedItemsFromCart(user);
         return savedUserOrder;
     }
 
     private Address findDefaultAddressByUser(User user){
-        return addressRepository.findByUserAndSavedByUser(user, true);
+        return addressRepository.findByUserAndDefaultAddress(user, true);
     }
 
     public OrderCommand createOrderCommand(Cart cart){
@@ -69,7 +79,9 @@ public class OrderService implements IOrderService {
             cartToEmpty.removeItems();
             cartRepository.save(cartToEmpty);
         }
-        throw new ResourceNotFoundException(
-                "User: " + user.getId() + " does not have cart to empty");
+        else{
+            throw new ResourceNotFoundException(
+                    "User: " + user.getId() + " does not have cart to empty");
+        }
     }
 }

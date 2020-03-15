@@ -2,7 +2,6 @@ package com.zelazobeton.bookstore.commands;
 
 import com.zelazobeton.bookstore.model.Address;
 import com.zelazobeton.bookstore.model.User;
-import com.zelazobeton.bookstore.model.UserOrder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,9 +24,8 @@ public class AddressCommand{
     private String postalCode;
     @NotBlank(message = "Please provide city name")
     private String city;
-    private UserOrder userOrder;
     private User user;
-    private boolean savedByUser;
+    private boolean defaultAddress;
 
     public AddressCommand() {}
     public AddressCommand(User user) {this.user = user;}
@@ -40,6 +38,6 @@ public class AddressCommand{
         this.postalCode = address.getPostalCode();
         this.city = address.getCity();
         this.user = address.getUser();
-        this.savedByUser = false;
+        this.defaultAddress = false;
     }
 }

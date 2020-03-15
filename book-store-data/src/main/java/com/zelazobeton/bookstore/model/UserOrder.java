@@ -17,7 +17,7 @@ public class UserOrder extends BaseEntity {
     List<OrderItem> orderItems = new ArrayList<>();
     @OneToOne
     private User user;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
     public UserOrder() {}
@@ -28,9 +28,7 @@ public class UserOrder extends BaseEntity {
             addToOrder(new OrderItem(elem, this));
         }
         this.user = orderCommand.getUser();
-//        //TODO: DOES USER_ORDER HAVE TO BE SET IN ADDRESS?
-//        orderCommand.getAddressCommand().setUserOrder(this);
-//        this.address = new Address(orderCommand.getAddressCommand());
+        this.address = new Address(orderCommand.getAddressCommand());
     }
 
     public void addToOrder(OrderItem orderItem){

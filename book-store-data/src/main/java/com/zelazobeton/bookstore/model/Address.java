@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 @Getter
@@ -18,15 +17,15 @@ public class Address extends BaseEntity {
     private String number;
     private String postalCode;
     private String city;
-    private boolean savedByUser;
+    private boolean defaultAddress;
     @ManyToOne
     private User user;
-    @OneToOne
-    private UserOrder userOrder;
-
-
     public Address() {}
     public Address(AddressCommand command){
+        updateByAddressCommand(command);
+    }
+
+    public void updateByAddressCommand(AddressCommand command){
         this.name = command.getName();
         this.surname = command.getSurname();
         this.street = command.getStreet();
@@ -34,7 +33,6 @@ public class Address extends BaseEntity {
         this.postalCode = command.getPostalCode();
         this.city = command.getCity();
         this.user = command.getUser();
-        this.userOrder = command.getUserOrder();
-        this.savedByUser = command.isSavedByUser();
+        this.defaultAddress = command.isDefaultAddress();
     }
 }

@@ -5,5 +5,5 @@ import com.zelazobeton.bookstore.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AddressRepository extends CrudRepository<Address, Long> {
-    Address findByUserAndSavedByUser(User user, boolean savedByUser);
+    Address findByUserAndDefaultAddress(User user, boolean savedByUser);
 }

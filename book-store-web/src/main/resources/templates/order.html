@@ -44,7 +44,6 @@
 								</div>
 								<input type="hidden" th:field="*{addressCommand.id}"/>
 								<input type="hidden" th:field="*{addressCommand.user}"/>
-								<input type="hidden" th:field="*{addressCommand.userOrder}"/>
 								<div class="row">
 									<label>Name</label>
 									<input type="text" th:field="*{addressCommand.name}" class="form-control"/>
@@ -93,7 +92,7 @@
 										 th:text="${error}">Validation error</p>
 								</div>
 
-								<input type="checkbox" th:field="*{addressCommand.savedByUser}"/>
+								<input type="checkbox" th:field="*{addressCommand.defaultAddress}"/>
 								<label th:text="${'Save address as default'}">Save address for future use</label>
 								<div class="row">
 									<button class="btn btn-success" type="submit">Place order</button>

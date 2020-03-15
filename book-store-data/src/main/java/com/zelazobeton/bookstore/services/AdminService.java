@@ -30,7 +30,7 @@ public class AdminService implements IAdminService {
         List<Function> functions = new ArrayList<>();
         functions.add(new Function("Add item"));
         functions.add(new Function("Add category"));
-        functions.add(new Function("Manage users"));
+        functions.add(new Function("Show Orders"));
         return functions;
     }
 
