@@ -35,4 +35,14 @@ public class Address extends BaseEntity {
         this.user = command.getUser();
         this.defaultAddress = command.isDefaultAddress();
     }
+
+    @Override
+    public String toString() {
+        return  "name: '" + name + '\n' +
+                "surname: '" + surname + '\n' +
+                "street: '" + street + '\n' +
+                "number: '" + number + '\n' +
+                "postalCode: '" + postalCode + '\n' +
+                "city: '" + city + '\n';
+    }
 }

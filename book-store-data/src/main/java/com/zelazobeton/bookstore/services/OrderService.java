@@ -12,7 +12,10 @@ import com.zelazobeton.bookstore.services.interfaces.IOrderService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService implements IOrderService {
@@ -69,6 +72,28 @@ public class OrderService implements IOrderService {
                 ? new AddressCommand(cart.getUser())
                 : new AddressCommand(savedAddress);
         return new OrderCommand(cart, defaultAddressCommand);
+    }
+
+    @Override
+    public List<UserOrder> getAllOrders(){
+        List<UserOrder> orders = new ArrayList<>();
+        StreamSupport
+                .stream(orderRepository.findAll().spliterator(), false)
+                .sorted(new UserOrder.CreationDateComparator())
+                .forEach(orders::add);
+        return orders;
+    }
+
+    @Override
+    public UserOrder getOrderById(Long id) {
+        if(id == null){
+            return null;
+        }
+        Optional<UserOrder> orderOpt = orderRepository.findById(id);
+        if(!orderOpt.isPresent()){
+            return null;
+        }
+        return orderOpt.get();
     }
 
     private void removeOrderedItemsFromCart(User user){

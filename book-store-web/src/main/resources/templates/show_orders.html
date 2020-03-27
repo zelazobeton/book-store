@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:insert="fragments.html :: header"> </header>
+  <title>Shop Item - Start Bootstrap Template</title>
+</head>
+
+<body>
+<nav th:insert="fragments.html :: navbar"> </nav>
+<div class="container-fluid" style="margin-top: 20px">
+  <!-- Page Content -->
+  <div class="row">
+    <div class="col-lg-3">
+      <h1 class="my-4">Book Store</h1>
+      <div class="list-group">
+        <a class="list-group-item"
+           th:each="function:${functions}"
+           th:text="${function.name}"
+           th:href="@{'/admin/' + ${function.link}}">Do sth
+        </a>
+      </div>
+    </div> <!-- /.col-lg-3 -->
+
+    <div class="col-lg-9">
+      <div class="row">
+        <table id="owners" class="table table-striped">
+          <thead>
+          <tr>
+            <td>Order Id</td>
+            <td>User</td>
+            <td>Order placed</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="order: ${orders}">
+            <td><a th:text="${order.getId()}" th:href="@{'/admin/show-orders/' + ${order.getId()}}"></a></td>
+            <td><a th:text="${order.getUser()}" th:href="@{'/admin/show-orders/' + ${order.getId()}}"></a></td>
+            <td th:text="${order.getCreationDate()}" ></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:if="${order_detail}">
+        <div class="row">
+          <h3>Selected order</h3>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+              <ul>
+                <li th:text="${'Id: ' + order_detail.getId()}">
+                <li th:text="${'User: ' + order_detail.getUser().getUsername()}">
+                <li th:text="${'Date: ' + order_detail.getCreationDate()}">
+              </ul>
+          </div>
+          <div class="col-lg-5">
+            <ul>
+              <li th:text="${'Name:' + order_detail.getAddress().getName()}">
+              <li th:text="${'Surname:' + order_detail.getAddress().getSurname()}">
+              <li th:text="${'Street:' + order_detail.getAddress().getStreet()}">
+              <li th:text="${'Number:' + order_detail.getAddress().getNumber()}">
+              <li th:text="${'Postal code:' + order_detail.getAddress().getPostalCode()}">
+              <li th:text="${'City:' + order_detail.getAddress().getCity()}">
+            </ul>
+          </div>
+        </div>
+        <table id="items" class="table table-striped">
+          <thead>
+          <tr>
+            <td>Id</td>
+            <td>Item</td>
+            <td>Price</td>
+            <td>Amount</td>
+            <td>Total price</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="orderItem: ${order_detail.getOrderItems()}">
+            <td><a th:text="${orderItem.getItem().getId()}"
+                th:href="@{'/item/' + ${orderItem.getItem().getId()}}"></a></td>
+            <td><a th:text="${orderItem.getItem()}"
+                   th:href="@{'/item/' + ${orderItem.getItem().getId()}}"></a></td>
+            <td th:text="${orderItem.getItem().getPrice()}"></td>
+            <td th:text="${orderItem.getAmount()}"></td>
+            <td th:text="${orderItem.getTotalPrice()}"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td th:text="${order_detail.getOrderPrice()}"></td>
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+    <!-- /.col-lg-9 -->
+
+
+  </div> <!--end row-->
+</div>
+
+<footer th:insert="fragments.html :: footer"> </footer>
+
+</body>
+</html>

@@ -37,4 +37,6 @@ public class User extends BaseEntity {
     public boolean isAdmin(){
         return authorities.stream().anyMatch(o -> o.getAuthority().equals("ROLE_ADMIN"));
     }
+
+
 }

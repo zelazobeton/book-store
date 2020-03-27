@@ -9,7 +9,9 @@ public class Templates {
     public static final String ORDER_VIEW = "order";
     public static final String ORDER_CONFIRMATION = "order_confirmation";
     public static final String REGISTER = "register";
-    public static final String CONSOLE = "console";
-    public static final String ADD_UPDATE_ITEM = "add_update_item";
     public static final String ERROR = "error";
+
+    public static final String ADD_UPDATE_ITEM = "add_update_item";
+    public static final String CONSOLE = "console";
+    public static final String SHOW_ORDERS = "show_orders";
 }

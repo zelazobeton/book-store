@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
-
 @Controller
 public class ItemController {
     private final IReviewService reviewService;
@@ -48,7 +46,6 @@ public class ItemController {
                                     @PathVariable("id") long id,
                                     @ModelAttribute ReviewCommand command,
                                     @AuthenticationPrincipal User user){
-        command.setDate(LocalDate.now());
         command.setUser(user);
         reviewService.save(command);
         return "redirect:/item/" + id;

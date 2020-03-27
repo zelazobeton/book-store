@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class Review extends BaseEntity {
         this.text = command.text;
         this.stars = 0;
         this.user = command.user;
-        this.date = command.date;
+        this.date = LocalDate.now();
         this.item = command.item;
     }
 

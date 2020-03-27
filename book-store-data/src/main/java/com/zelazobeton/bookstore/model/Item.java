@@ -52,4 +52,9 @@ public class Item extends BaseEntity {
     public void addReview(Review review) {
         this.reviews.add(review);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -4,10 +4,7 @@ import com.zelazobeton.bookstore.Templates;
 import com.zelazobeton.bookstore.commands.ItemCommand;
 import com.zelazobeton.bookstore.model.Item;
 import com.zelazobeton.bookstore.model.User;
-import com.zelazobeton.bookstore.services.interfaces.IAdminService;
-import com.zelazobeton.bookstore.services.interfaces.ICategoryService;
-import com.zelazobeton.bookstore.services.interfaces.IImageService;
-import com.zelazobeton.bookstore.services.interfaces.IItemService;
+import com.zelazobeton.bookstore.services.interfaces.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,15 +22,21 @@ public class AdminController {
     private final IItemService itemService;
     private final ICategoryService categoryService;
     private final IImageService imageService;
+    private final IOrderService orderService;
 
-    public AdminController(IAdminService adminService, IItemService itemService, ICategoryService categoryService, IImageService imageService) {
+    public AdminController(IAdminService adminService,
+                           IItemService itemService,
+                           ICategoryService categoryService,
+                           IImageService imageService,
+                           IOrderService orderService) {
         this.adminService = adminService;
         this.itemService = itemService;
         this.categoryService = categoryService;
         this.imageService = imageService;
+        this.orderService = orderService;
     }
 
-    @GetMapping("/console")
+    @GetMapping({"/", "/console"})
     public String getConsole(Model model,
                              @AuthenticationPrincipal User user){
         model.addAttribute("functions", adminService.getFunctions());
@@ -87,23 +90,21 @@ public class AdminController {
         return "redirect:/item/" + savedItem.getId();
     }
 
-//    @GetMapping("item={id}/add-img")
-//    public String showUploadForm(@PathVariable("id") Long id, Model model) {
-//        Item item = itemService.findById(id);
-//        model.addAttribute("item", item);
-//        model.addAttribute("functions", adminService.getFunctions());
-//        return "recipe/add-img";
-//    }
-//
-//    @PostMapping("item={id}/add-img")
-//    public String addImgToDb(@PathVariable("id") Long id,
-//                             @RequestParam("imagefile") MultipartFile file)
-//        throws IOException
-//    {
-//        System.out.println("@ addImgToDb()");
-//        imageService.saveImageFile(Long.valueOf(id), file);
-//        return "redirect:/item/" + id + "/img=0";
-//    }
+    @GetMapping("/show-orders")
+    public String getAllOrders(Model model,
+                            @AuthenticationPrincipal User user){
+        model.addAttribute("orders", orderService.getAllOrders());
+        return Templates.SHOW_ORDERS;
+    }
+
+    @GetMapping("/show-orders/{id}")
+    public String getOrderDetail(Model model,
+                            @PathVariable("id") long id,
+                            @AuthenticationPrincipal User user){
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("order_detail", orderService.getOrderById(id));
+        return Templates.SHOW_ORDERS;
+    }
 
     private String backToItemForm(Model model, ItemCommand command){
         model.addAttribute("recipe", command);
